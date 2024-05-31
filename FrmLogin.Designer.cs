@@ -1,4 +1,4 @@
-﻿namespace MyEnterpriseSystem
+﻿namespace ExpenseTracker
 {
     partial class FrmLogin
     {

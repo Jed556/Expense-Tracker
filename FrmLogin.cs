@@ -9,17 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MyEnterpriseSystem
+namespace ExpenseTracker
 {
     public partial class FrmLogin : Form
     {
-        Database objDB = new Database();
-        MySqlConnection connection;
-        MySqlCommand command;
+        Database Database = new Database("datasource=localhost;port=3306;Initial Catalog='expensetracker';username=root;password=");
+        User user = new User();
 
         string username;
         string password;
-        int counter = 0;
+        int attempts = 3;
 
         public FrmLogin()
         {
@@ -28,29 +27,7 @@ namespace MyEnterpriseSystem
 
         private void FrmLogin_Load(object sender, EventArgs e)
         {
-            connection = new MySqlConnection(objDB.connectionString);
-        }
-
-        void Connect(MySqlConnection connection)
-        {
-
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-        }
-
-        MySqlDataReader SearchQuery(MySqlConnection connection, String Query)
-        {
-            //Connect(connection);
-
-            command = new MySqlCommand(Query, connection);
-            command.Parameters.AddWithValue("@username", username);
-            command.Parameters.AddWithValue("@password", password);
-          
-            MySqlDataReader mdr = command.ExecuteReader();
-
-            return mdr;
+            Database.Connect();
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
@@ -62,42 +39,46 @@ namespace MyEnterpriseSystem
             }
             else
             {
-                username = TxtUsername.Text;
-                password = TxtPassword.Text;
+                user.username = TxtUsername.Text;
+                user.password = TxtPassword.Text;
 
-                connection.Open();
-                String Query = "SELECT * FROM tblLogin WHERE username = @username AND password = @password";
-                MySqlDataReader mdr1 = SearchQuery(connection, Query);
-                connection.Close();
-                connection.Open();
-                MySqlDataReader mdr2 = SearchQuery(connection, Query);
-                connection.Close();
-                String Query2 = "SELECT * FROM tblLogin WHERE username = @username AND password = @password";
+                String Query1 = "SELECT * FROM tblusers WHERE username = @Username";
+                MySqlDataReader mdr1 = Database.SearchQuery(Query1, user);
 
-            if (mdr1.Read())
-            {
-                MessageBox.Show("Login Successful!");
-                FrmMain frmMain = new FrmMain();
-                frmMain.Show();
-                this.Hide();
-            }
-            else if (counter == 3)
-            { 
-                MessageBox.Show("You have reached the maximum number of attempts.");
-                Application.Exit();
-            }
-            else
-            {
-                MessageBox.Show("Login Failed!");
-                counter++;
-                if (counter >= 1)
-                {          
-                    LbAtt.Visible = true;
-                    LbAtt.Text = "Attempts Remaining: " + (3 - counter).ToString();
+                if (mdr1.Read())
+                {
+                    Database.Disconnect();
+                    String Query2 = "SELECT * FROM tblusers WHERE username = @Username AND password = @Password";
+                    MySqlDataReader mdr2 = Database.SearchQuery(Query2, user);
+
+                    if (mdr2.Read())
+                    {
+                        MessageBox.Show("Login Successful!");
+                        user.updateUser(mdr2.GetInt32("id"), mdr2.GetString("username"), mdr2.GetString("password"));
+                        FrmHome FrmHome = new FrmHome();
+                        FrmHome.Show();
+                        this.Hide();
+                    }
+                    else if (attempts <= 0)
+                    {
+                        MessageBox.Show("You are requesting too frequently.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Wrong Password!");
+                        if (attempts-- > 0)
+                        {
+                            LbAtt.Visible = true;
+                            LbAtt.Text = "Attempts Remaining: " + (attempts).ToString();
+                        }
+                    }
+                    Database.Disconnect();
                 }
-            }
-
-            
+                else
+                {
+                    MessageBox.Show("User not Found");
+                }
+                Database.Disconnect();
             }
         }
     }
