@@ -24,9 +24,7 @@ namespace ExpenseTracker
         bool TxtExpenseName_HasVal = false;
         bool TxtExpenseAmount_HasVal = false;
 
-        Database Database = new Database("datasource=localhost;port=3306;Initial Catalog='expensetracker';username=root;password=");
         Expense Expense = new Expense();
-        User User = new User();
 
         public FrmList_Edit()
         {
@@ -36,10 +34,10 @@ namespace ExpenseTracker
         private void FrmMain_Load(object sender, EventArgs e)
         {
             String Query = "SELECT * FROM tblexpenses";
-            DataTable dt = Database.ExecuteAdapter(Query);
+            DataTable dt = Global.Database.ExecuteAdapter(Query);
             
             DgvTable.DataSource = dt;
-            Database.Disconnect();
+            Global.Database.Disconnect();
         }
 
         void Clear()
@@ -128,7 +126,7 @@ namespace ExpenseTracker
 
             String Query = "INSERT INTO tblexpenses(ExpenseID, Name, Amount, Date) VALUES (@ID, @Name, @Amount, @Date)";
 
-            Database.ExecuteQuery(Query, Expense);
+            Global.Database.ExecuteQuery(Query, Expense);
 
             MessageBox.Show("Record Inserted Successfully", "Record Inserted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
@@ -143,7 +141,7 @@ namespace ExpenseTracker
                 Expense.id = int.Parse(TxtExpenseID.Text);
 
                 String Query = "SELECT * FROM tblexpenses WHERE ExpenseID=@ID";
-                MySqlDataReader mdr = Database.SearchQuery(Query, Expense);
+                MySqlDataReader mdr = Global.Database.SearchQuery(Query, Expense);
 
                 if (mdr.Read())
                 {
@@ -162,7 +160,7 @@ namespace ExpenseTracker
                     BtnDel.Enabled = false;
                 }
 
-                Database.Disconnect();
+                Global.Database.Disconnect();
             } catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -176,7 +174,7 @@ namespace ExpenseTracker
             Expense.amount = double.Parse(TxtExpenseAmount.Text);
 
             String Query = "UPDATE tblexpenses SET Name=@Name, Amount=@Amount WHERE ExpenseID=@ID";
-            Database.ExecuteQuery(Query, Expense);
+            Global.Database.ExecuteQuery(Query, Expense);
 
             MessageBox.Show("Record Updated Successfully");
 
@@ -191,7 +189,7 @@ namespace ExpenseTracker
                 Expense.id = int.Parse(TxtExpenseID.Text);
 
                 String Query = "DELETE FROM tblexpenses WHERE ExpenseID=@ID";
-                int output = Database.ExecuteQuery(Query, Expense);
+                int output = Global.Database.ExecuteQuery(Query, Expense);
 
                 if (output == 1)
                 {
@@ -209,7 +207,7 @@ namespace ExpenseTracker
 
         private void BtnClose_Click(object sender, EventArgs e)
         {
-            Database.Disconnect();
+            Global.Database.Disconnect();
             Application.Exit();
         }
 
@@ -258,32 +256,32 @@ namespace ExpenseTracker
         private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
         {
            String Data = "SELECT * FROM tblexpenses";
-           DataTable dt = Database.ExecuteAdapter(Data);
+           DataTable dt = Global.Database.ExecuteAdapter(Data);
 
            CmbExpenseTag.DataSource = dt;
            CmbExpenseTag.DisplayMember = "Tag";
            CmbExpenseTag.ValueMember = "Tag";
 
-           Database.Disconnect();
+            Global.Database.Disconnect();
         }
 
         private void DgvTable_Layout(object sender, LayoutEventArgs e)
         {
             String Data = "SELECT * FROM tblexpenses";
 
-            Database.Connect();
+            Global.Database.Connect();
             MySqlDataAdapter mda = new MySqlDataAdapter();
             DataTable dt = new DataTable();
             BindingSource bs = new BindingSource();
 
-            MySqlCommand command = new MySqlCommand(Data, Database.connection);
+            MySqlCommand command = new MySqlCommand(Data, Global.Database.connection);
             mda.SelectCommand = command;
             mda.Fill(dt);
             bs.DataSource = dt;
             mda.Update(dt);
 
 
-            Database.Disconnect();
+            Global.Database.Disconnect();
         }
     }
 }

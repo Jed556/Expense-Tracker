@@ -50,19 +50,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Globals.cs" />
     <Compile Include="FrmHome.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmHome.Designer.cs">
       <DependentUpon>FrmHome.cs</DependentUpon>
     </Compile>
-    <Compile Include="Schema.cs" />
-    <Compile Include="Database.cs" />
-    <Compile Include="FrmMain.cs">
+    <Compile Include="FrmList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmMain.Designer.cs">
-      <DependentUpon>FrmMain.cs</DependentUpon>
+    <Compile Include="FrmList.Designer.cs">
+      <DependentUpon>FrmList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schema.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="FrmList_Edit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmList_Edit.Designer.cs">
+      <DependentUpon>FrmList_Edit.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmLogin.cs">
       <SubType>Form</SubType>
@@ -75,8 +82,8 @@
     <EmbeddedResource Include="FrmHome.resx">
       <DependentUpon>FrmHome.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmMain.resx">
-      <DependentUpon>FrmMain.cs</DependentUpon>
+    <EmbeddedResource Include="FrmList_Edit.resx">
+      <DependentUpon>FrmList_Edit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>

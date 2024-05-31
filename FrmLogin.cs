@@ -13,12 +13,10 @@ namespace ExpenseTracker
 {
     public partial class FrmLogin : Form
     {
-        Database Database = new Database("datasource=localhost;port=3306;Initial Catalog='expensetracker';username=root;password=");
-        User user = new User();
-
         string username;
         string password;
         int attempts = 3;
+        User tempUser = new User();
 
         public FrmLogin()
         {
@@ -27,7 +25,7 @@ namespace ExpenseTracker
 
         private void FrmLogin_Load(object sender, EventArgs e)
         {
-            Database.Connect();
+            Global.Database.Connect();
         }
 
         private void BtnLogin_Click(object sender, EventArgs e)
@@ -39,22 +37,22 @@ namespace ExpenseTracker
             }
             else
             {
-                user.username = TxtUsername.Text;
-                user.password = TxtPassword.Text;
+                tempUser.username = TxtUsername.Text;
+                tempUser.password = TxtPassword.Text;
 
                 String Query1 = "SELECT * FROM tblusers WHERE username = @Username";
-                MySqlDataReader mdr1 = Database.SearchQuery(Query1, user);
+                MySqlDataReader mdr1 = Global.Database.SearchQuery(Query1, tempUser);
 
                 if (mdr1.Read())
                 {
-                    Database.Disconnect();
+                    Global.Database.Disconnect();
                     String Query2 = "SELECT * FROM tblusers WHERE username = @Username AND password = @Password";
-                    MySqlDataReader mdr2 = Database.SearchQuery(Query2, user);
+                    MySqlDataReader mdr2 = Global.Database.SearchQuery(Query2, tempUser);
 
                     if (mdr2.Read())
                     {
                         MessageBox.Show("Login Successful!");
-                        user.updateUser(mdr2.GetInt32("id"), mdr2.GetString("username"), mdr2.GetString("password"));
+                        Global.User.updateUser(mdr2.GetInt32("id"), mdr2.GetString("username"), mdr2.GetString("password"));
                         FrmHome FrmHome = new FrmHome();
                         FrmHome.Show();
                         this.Hide();
@@ -72,13 +70,13 @@ namespace ExpenseTracker
                             LbAtt.Text = "Attempts Remaining: " + (attempts).ToString();
                         }
                     }
-                    Database.Disconnect();
+                    Global.Database.Disconnect();
                 }
                 else
                 {
                     MessageBox.Show("User not Found");
                 }
-                Database.Disconnect();
+                Global.Database.Disconnect();
             }
         }
     }
