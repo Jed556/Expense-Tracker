@@ -10,24 +10,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using MySql.Data.MySqlClient;
+using ExpenseTracker;
+using System.Data.SqlClient;
 
 
 
-namespace MyEnterpriseSystem
+namespace ExpenseTracker
 {
     public partial class FrmMain : Form
     {
-        int expenseId = 0;
-        String expenseName;
-        double expenseAmount;
 
         bool TxtExpenseID_HasVal = false;
         bool TxtExpenseName_HasVal = false;
         bool TxtExpenseAmount_HasVal = false;
 
-        Database objDB = new Database();
-        MySqlConnection connection;
-        MySqlCommand command;
+        Database Database = new Database("datasource=localhost;port=3306;Initial Catalog='expensetracker';username=root;password=");
+        Expense Expense = new Expense();
+        User User = new User();
 
         public FrmMain()
         {
@@ -36,15 +35,11 @@ namespace MyEnterpriseSystem
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            connection = new MySqlConnection(objDB.connectionString);
-        }
-
-        void Connect(MySqlConnection connection)
-        {
-            if (connection.State == ConnectionState.Closed)
-            {
-                connection.Open();
-            }
+            String Query = "SELECT * FROM tblexpenses";
+            DataTable dt = Database.ExecuteAdapter(Query);
+            
+            DgvTable.DataSource = dt;
+            Database.Disconnect();
         }
 
         void Clear()
@@ -57,19 +52,24 @@ namespace MyEnterpriseSystem
                 }
             }
 
-            expenseId = 0;
-            expenseName = "";
-            expenseAmount = 0;
+            ClearValues();
         }
 
         void ClearValues()
         {
             TxtExpenseID.Clear();
             TxtExpenseName.Clear();
+            CmbExpenseTag.SelectedIndex = -1;
             TxtExpenseAmount.Clear();
+            TxtExpenseDate.Clear();
             TxtExpenseDate.Visible = false;
             lbExpenseDate.Visible = false;
-            TxtExpenseDate.Clear();
+
+            Expense.id = 0;
+            Expense.name = "";
+            Expense.tag = "";
+            Expense.amount = 0;
+            Expense.date = DateTime.Now;
         }
         
         void DisableButtons()
@@ -82,9 +82,12 @@ namespace MyEnterpriseSystem
 
         void GetValues()
         {
-            expenseId = int.Parse(TxtExpenseID.Text);
-            expenseName = TxtExpenseName.Text;
-            expenseAmount = double.Parse(TxtExpenseAmount.Text);
+            Expense.id = int.Parse(TxtExpenseID.Text);
+            Expense.userId = 0;
+            Expense.name = TxtExpenseName.Text;
+            Expense.tag = CmbExpenseTag.Text;
+            Expense.amount = double.Parse(TxtExpenseAmount.Text);
+            Expense.date = DateTime.Now;
         }
 
         void CheckEnable()
@@ -118,50 +121,14 @@ namespace MyEnterpriseSystem
             }
         }   
 
-        int ExecuteQuery(MySqlConnection connection, String Query)
-        {
-            Connect(connection);
-
-            command = new MySqlCommand(Query, connection);
-            command.Parameters.AddWithValue("@expenseID", expenseId);
-            command.Parameters.AddWithValue("@expenseName", expenseName);
-            command.Parameters.AddWithValue("@expenseAmount", expenseAmount);
-            command.Parameters.AddWithValue("@expenseDate", DateTime.Today);
-
-            int success = command.ExecuteNonQuery();
-
-            connection.Close();
-
-            return success;
-        }
-
-        MySqlDataReader SearchQuery(MySqlConnection connection, String Query)
-        {
-            Connect(connection);
-
-            command = new MySqlCommand(Query, connection);
-            command.Parameters.AddWithValue("@expenseID", expenseId);
-            command.Parameters.AddWithValue("@expenseName", expenseName);
-            command.Parameters.AddWithValue("@expenseAmount", expenseAmount);
-
-            MySqlDataReader mdr = command.ExecuteReader();
-
-            return mdr;
-        }
-
-        private void BtnClose_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            expenseName = TxtExpenseName.Text;
-            expenseAmount = double.Parse(TxtExpenseAmount.Text);
+            Expense.name = TxtExpenseName.Text;
+            Expense.amount = double.Parse(TxtExpenseAmount.Text);
 
-            String insertQuery = "INSERT INTO tblexpenses(ExpenseID, Name, Amount, Date) VALUES (@expenseID,@expenseName,@expenseAmount, @expenseDate)";
+            String Query = "INSERT INTO tblexpenses(ExpenseID, Name, Amount, Date) VALUES (@ID, @Name, @Amount, @Date)";
 
-            ExecuteQuery(connection, insertQuery);
+            Database.ExecuteQuery(Query, Expense);
 
             MessageBox.Show("Record Inserted Successfully", "Record Inserted", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
@@ -173,17 +140,17 @@ namespace MyEnterpriseSystem
         {
             try
             {
-                expenseId = int.Parse(TxtExpenseID.Text);
-                MySqlDataReader mdr;
+                Expense.id = int.Parse(TxtExpenseID.Text);
 
-                String searchQuery = "SELECT * FROM tblexpenses WHERE ExpenseID=@expenseID";
-
-                mdr = SearchQuery(connection, searchQuery);
+                String Query = "SELECT * FROM tblexpenses WHERE ExpenseID=@ID";
+                MySqlDataReader mdr = Database.SearchQuery(Query, Expense);
 
                 if (mdr.Read())
                 {
+                    TxtExpenseID.Text = mdr.GetInt32("ExpenseID").ToString();
                     TxtExpenseName.Text = mdr.GetString("Name");
                     TxtExpenseAmount.Text = mdr.GetDouble("Amount").ToString();
+                    CmbExpenseTag.Text = mdr.GetString("Tag");
                     TxtExpenseDate.Text = mdr.GetDateTime("Date").ToString("dd/MM/yyyy");
                     BtnDel.Enabled = true;
                     TxtExpenseDate.Visible = true;
@@ -195,8 +162,7 @@ namespace MyEnterpriseSystem
                     BtnDel.Enabled = false;
                 }
 
-                connection.Close();
-
+                Database.Disconnect();
             } catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -205,13 +171,12 @@ namespace MyEnterpriseSystem
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-            expenseId = int.Parse(TxtExpenseID.Text);
-            expenseName = TxtExpenseName.Text;
-            expenseAmount = double.Parse(TxtExpenseAmount.Text);
+            Expense.id = int.Parse(TxtExpenseID.Text);
+            Expense.name = TxtExpenseName.Text;
+            Expense.amount = double.Parse(TxtExpenseAmount.Text);
 
-            String updateQuery = "UPDATE tblexpenses SET Name=@expenseName, Amount=@expenseAmount WHERE ExpenseID=@expenseID";
-
-            ExecuteQuery(connection, updateQuery);
+            String Query = "UPDATE tblexpenses SET Name=@Name, Amount=@Amount WHERE ExpenseID=@ID";
+            Database.ExecuteQuery(Query, Expense);
 
             MessageBox.Show("Record Updated Successfully");
 
@@ -223,11 +188,10 @@ namespace MyEnterpriseSystem
             DialogResult result = MessageBox.Show("Are you sure you want to delete this record?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
-                expenseId = int.Parse(TxtExpenseID.Text);
+                Expense.id = int.Parse(TxtExpenseID.Text);
 
-                String deleteQuery = "DELETE FROM tblexpenses WHERE ExpenseID=@expenseID";
-
-                int output = ExecuteQuery(connection, deleteQuery);
+                String Query = "DELETE FROM tblexpenses WHERE ExpenseID=@ID";
+                int output = Database.ExecuteQuery(Query, Expense);
 
                 if (output == 1)
                 {
@@ -241,6 +205,12 @@ namespace MyEnterpriseSystem
 
                 ClearValues();
             }
+        }
+
+        private void BtnClose_Click(object sender, EventArgs e)
+        {
+            Database.Disconnect();
+            Application.Exit();
         }
 
         private void TxtDeptID_TextChanged(object sender, EventArgs e)
@@ -283,6 +253,37 @@ namespace MyEnterpriseSystem
             }
 
             CheckEnable();
+        }
+
+        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
+        {
+           String Data = "SELECT * FROM tblexpenses";
+           DataTable dt = Database.ExecuteAdapter(Data);
+
+           CmbExpenseTag.DataSource = dt;
+           CmbExpenseTag.DisplayMember = "Tag";
+           CmbExpenseTag.ValueMember = "Tag";
+
+           Database.Disconnect();
+        }
+
+        private void DgvTable_Layout(object sender, LayoutEventArgs e)
+        {
+            String Data = "SELECT * FROM tblexpenses";
+
+            Database.Connect();
+            MySqlDataAdapter mda = new MySqlDataAdapter();
+            DataTable dt = new DataTable();
+            BindingSource bs = new BindingSource();
+
+            MySqlCommand command = new MySqlCommand(Data, Database.connection);
+            mda.SelectCommand = command;
+            mda.Fill(dt);
+            bs.DataSource = dt;
+            mda.Update(dt);
+
+
+            Database.Disconnect();
         }
     }
 }
