@@ -17,7 +17,7 @@ using System.Data.SqlClient;
 
 namespace ExpenseTracker
 {
-    public partial class FrmMain : Form
+    public partial class FrmList_Edit : Form
     {
 
         bool TxtExpenseID_HasVal = false;
@@ -28,7 +28,7 @@ namespace ExpenseTracker
         Expense Expense = new Expense();
         User User = new User();
 
-        public FrmMain()
+        public FrmList_Edit()
         {
             InitializeComponent();
         }

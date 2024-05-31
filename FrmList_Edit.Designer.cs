@@ -1,6 +1,6 @@
 ﻿namespace ExpenseTracker
 {
-    partial class FrmMain
+    partial class FrmList_Edit
     {
         /// <summary>
         /// Required designer variable.
