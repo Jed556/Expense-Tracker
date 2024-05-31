@@ -29,83 +29,82 @@
         private void InitializeComponent()
         {
             this.LbTitle = new System.Windows.Forms.Label();
-            this.BtnListView = new System.Windows.Forms.Button();
+            this.BtnLists = new System.Windows.Forms.Button();
             this.BtnProfile = new System.Windows.Forms.Button();
-            this.BtnUpdates = new System.Windows.Forms.Button();
+            this.BtnUpdate = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.BtnLogout = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // LbTitle
             // 
             this.LbTitle.AutoSize = true;
-            this.LbTitle.Font = new System.Drawing.Font("Poppins", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LbTitle.Location = new System.Drawing.Point(37, 48);
+            this.LbTitle.Font = new System.Drawing.Font("Poppins", 20F);
+            this.LbTitle.Location = new System.Drawing.Point(35, 46);
             this.LbTitle.Name = "LbTitle";
-            this.LbTitle.Size = new System.Drawing.Size(248, 51);
+            this.LbTitle.Size = new System.Drawing.Size(232, 48);
             this.LbTitle.TabIndex = 0;
             this.LbTitle.Text = "Welcome User!";
             // 
-            // BtnListView
+            // BtnLists
             // 
-            this.BtnListView.Location = new System.Drawing.Point(32, 140);
-            this.BtnListView.Name = "BtnListView";
-            this.BtnListView.Size = new System.Drawing.Size(193, 103);
-            this.BtnListView.TabIndex = 1;
-            this.BtnListView.Text = "View Lists";
-            this.BtnListView.UseVisualStyleBackColor = true;
-            this.BtnListView.Click += new System.EventHandler(this.button1_Click);
+            this.BtnLists.Location = new System.Drawing.Point(43, 137);
+            this.BtnLists.Name = "BtnLists";
+            this.BtnLists.Size = new System.Drawing.Size(160, 100);
+            this.BtnLists.TabIndex = 1;
+            this.BtnLists.Text = "View Lists";
+            this.BtnLists.UseVisualStyleBackColor = true;
+            this.BtnLists.Click += new System.EventHandler(this.BtnLists_Click);
             // 
             // BtnProfile
             // 
-            this.BtnProfile.Location = new System.Drawing.Point(254, 140);
+            this.BtnProfile.Location = new System.Drawing.Point(233, 137);
             this.BtnProfile.Name = "BtnProfile";
-            this.BtnProfile.Size = new System.Drawing.Size(193, 103);
-            this.BtnProfile.TabIndex = 3;
-            this.BtnProfile.Text = "Profile";
+            this.BtnProfile.Size = new System.Drawing.Size(160, 100);
+            this.BtnProfile.TabIndex = 2;
+            this.BtnProfile.Text = "View Proifile";
             this.BtnProfile.UseVisualStyleBackColor = true;
             // 
-            // BtnUpdates
+            // BtnUpdate
             // 
-            this.BtnUpdates.Location = new System.Drawing.Point(35, 270);
-            this.BtnUpdates.Name = "BtnUpdates";
-            this.BtnUpdates.Size = new System.Drawing.Size(193, 103);
-            this.BtnUpdates.TabIndex = 4;
-            this.BtnUpdates.Text = "Updates";
-            this.BtnUpdates.UseVisualStyleBackColor = true;
+            this.BtnUpdate.Location = new System.Drawing.Point(425, 137);
+            this.BtnUpdate.Name = "BtnUpdate";
+            this.BtnUpdate.Size = new System.Drawing.Size(160, 100);
+            this.BtnUpdate.TabIndex = 3;
+            this.BtnUpdate.Text = "Updates";
+            this.BtnUpdate.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(476, 140);
+            this.button1.Location = new System.Drawing.Point(43, 265);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(193, 103);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Profile";
+            this.button1.Size = new System.Drawing.Size(160, 100);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "About";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // BtnLogout
             // 
-            this.button2.Location = new System.Drawing.Point(254, 270);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(193, 103);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Updates";
-            this.button2.UseVisualStyleBackColor = true;
+            this.BtnLogout.Location = new System.Drawing.Point(233, 265);
+            this.BtnLogout.Name = "BtnLogout";
+            this.BtnLogout.Size = new System.Drawing.Size(160, 100);
+            this.BtnLogout.TabIndex = 5;
+            this.BtnLogout.Text = "Logout";
+            this.BtnLogout.UseVisualStyleBackColor = true;
             // 
             // FrmHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 451);
-            this.Controls.Add(this.button2);
+            this.ClientSize = new System.Drawing.Size(634, 411);
+            this.Controls.Add(this.BtnLogout);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.BtnUpdates);
+            this.Controls.Add(this.BtnUpdate);
             this.Controls.Add(this.BtnProfile);
-            this.Controls.Add(this.BtnListView);
+            this.Controls.Add(this.BtnLists);
             this.Controls.Add(this.LbTitle);
             this.Name = "FrmHome";
             this.Text = "Expense Tracker";
-            this.Load += new System.EventHandler(this.FrmHome_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,10 +113,10 @@
         #endregion
 
         private System.Windows.Forms.Label LbTitle;
-        private System.Windows.Forms.Button BtnListView;
+        private System.Windows.Forms.Button BtnLists;
         private System.Windows.Forms.Button BtnProfile;
-        private System.Windows.Forms.Button BtnUpdates;
+        private System.Windows.Forms.Button BtnUpdate;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnLogout;
     }
 }
