@@ -35,8 +35,12 @@ namespace ExpenseTracker
             catch (Exception ex)
             {
                 MessageBox.Show("Error Connnecting to Database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
+                foreach (Form form in Application.OpenForms)
+                {
+                    form.Close();
+                }
                 FrmLogin FrmLogin = new FrmLogin();
+                FrmLogin.Show();
             }
         }
 
