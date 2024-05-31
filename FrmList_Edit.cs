@@ -19,10 +19,13 @@ namespace ExpenseTracker
 {
     public partial class FrmList_Edit : Form
     {
+        // --------------------------------- INITIALIZE --------------------------------- //
 
         bool TxtExpenseID_HasVal = false;
         bool TxtExpenseName_HasVal = false;
+        bool TxtExpensetag_HasVal = false;
         bool TxtExpenseAmount_HasVal = false;
+        bool TxtExpenseDate_HasVal = false;
 
         Expense Expense = new Expense();
         List<Expense> ExpenseDeleteList = new List<Expense>();
@@ -35,13 +38,41 @@ namespace ExpenseTracker
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-        }
-
-        private void FrmMain_Load(object sender, EventArgs e)
-        {
             DgvTable.DataSource = dt;
             Global.Database.Disconnect();
         }
+
+        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
+        {
+            String Data = "SELECT * FROM tblexpenses";
+            DataTable dt = Global.Database.ExecuteAdapter(Data);
+
+            CmbExpenseTag.DataSource = dt;
+            CmbExpenseTag.DisplayMember = "Tag";
+            CmbExpenseTag.ValueMember = "Tag";
+
+            Global.Database.Disconnect();
+        }
+
+        private void DgvTable_Layout(object sender, LayoutEventArgs e)
+        {
+            String Data = "SELECT * FROM tblexpenses";
+
+            Global.Database.Connect();
+            MySqlDataAdapter mda = new MySqlDataAdapter();
+            DataTable dt = new DataTable();
+            BindingSource bs = new BindingSource();
+
+            MySqlCommand command = new MySqlCommand(Data, Global.Database.connection);
+            mda.SelectCommand = command;
+            mda.Fill(dt);
+            bs.DataSource = dt;
+            mda.Update(dt);
+
+            Global.Database.Disconnect();
+        }
+
+        // --------------------------------- FUNCTIONS --------------------------------- //
 
         void Clear()
         {
@@ -127,6 +158,77 @@ namespace ExpenseTracker
                 BtnDel.Enabled = false;
             }
         }
+
+        // --------------------------------- EVENTS --------------------------------- //
+
+        private void TxtExpenseID_TextChanged(object sender, EventArgs e)
+        {
+            if (TxtExpenseID.Text != "")
+            {
+                TxtExpenseID_HasVal = true;
+            }
+            else
+            {
+                TxtExpenseID_HasVal = false;
+            }
+
+            CheckEnable();
+        }
+
+        private void TxtExpenseName_TextChanged(object sender, EventArgs e)
+        {
+            if (TxtExpenseName.Text != "")
+            {
+                TxtExpenseName_HasVal = true;
+            }
+            else
+            {
+                TxtExpenseName_HasVal = false;
+            }
+
+            CheckEnable();
+        }
+
+        private void TxtExpenseAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (TxtExpenseAmount.Text != "")
+            {
+                TxtExpenseAmount_HasVal = true;
+            }
+            else
+            {
+                TxtExpenseAmount_HasVal = false;
+            }
+
+            CheckEnable();
+        }
+
+        private void TxtExpenseDate_TextChanged(object sender, EventArgs e)
+        {
+            if (TxtExpenseDate.Text != "")
+            {
+                TxtExpenseDate_HasVal = true;
+            }
+            else
+            {
+                TxtExpenseDate_HasVal = false;
+            }
+
+            CheckEnable();
+        }
+
+        private void DgvTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            Expense DelExpense = new Expense();
+            DelExpense.id = int.Parse(e.Row.Cells[0].Value.ToString());
+            DelExpense.userId = int.Parse(e.Row.Cells[1].Value.ToString());
+            DelExpense.listId = int.Parse(e.Row.Cells[2].Value.ToString());
+
+            ExpenseDeleteList.Add(DelExpense);
+        }
+
+        // --------------------------------- FORM --------------------------------- //
+
 
         private void BtnAdd_Click(object sender, EventArgs e)
         {
@@ -220,85 +322,6 @@ namespace ExpenseTracker
             }
         }
 
-        private void BtnCancel_Click(object sender, EventArgs e)
-        {
-            Global.Database.Disconnect();
-            Functions.SwitchWindow(new FrmList());
-        }
-
-        private void TxtDeptID_TextChanged(object sender, EventArgs e)
-        {
-            if (TxtExpenseID.Text != "")
-            {
-                TxtExpenseID_HasVal = true;
-            }
-            else
-            {
-                TxtExpenseID_HasVal = false;
-            }
-
-            CheckEnable();
-        }
-
-        private void TxtDeptName_TextChanged(object sender, EventArgs e)
-        {
-            if (TxtExpenseName.Text != "")
-            {
-                TxtExpenseName_HasVal = true;
-            }
-            else
-            {
-                TxtExpenseName_HasVal = false;
-            }
-
-            CheckEnable();
-        }
-
-        private void TxtDeptBudget_TextChanged(object sender, EventArgs e)
-        {
-            if (TxtExpenseAmount.Text != "")
-            {
-                TxtExpenseAmount_HasVal = true;
-            }
-            else
-            {
-                TxtExpenseAmount_HasVal = false;
-            }
-
-            CheckEnable();
-        }
-
-        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
-        {
-            String Data = "SELECT * FROM tblexpenses";
-            DataTable dt = Global.Database.ExecuteAdapter(Data);
-
-            CmbExpenseTag.DataSource = dt;
-            CmbExpenseTag.DisplayMember = "Tag";
-            CmbExpenseTag.ValueMember = "Tag";
-
-            Global.Database.Disconnect();
-        }
-
-        private void DgvTable_Layout(object sender, LayoutEventArgs e)
-        {
-            String Data = "SELECT * FROM tblexpenses";
-
-            Global.Database.Connect();
-            MySqlDataAdapter mda = new MySqlDataAdapter();
-            DataTable dt = new DataTable();
-            BindingSource bs = new BindingSource();
-
-            MySqlCommand command = new MySqlCommand(Data, Global.Database.connection);
-            mda.SelectCommand = command;
-            mda.Fill(dt);
-            bs.DataSource = dt;
-            mda.Update(dt);
-
-            Global.Database.Disconnect();
-        }
-
-
         private void DgvTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow row = this.DgvTable.Rows[e.RowIndex];
@@ -341,14 +364,10 @@ namespace ExpenseTracker
                 }
         }
 
-        private void DgvTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
-            Expense DelExpense = new Expense();
-            DelExpense.id = int.Parse(e.Row.Cells[0].Value.ToString());
-            DelExpense.userId = int.Parse(e.Row.Cells[1].Value.ToString());
-            DelExpense.listId = int.Parse(e.Row.Cells[2].Value.ToString());
-
-            ExpenseDeleteList.Add(DelExpense);
+            Global.Database.Disconnect();
+            Functions.SwitchWindow(new FrmList());
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ExpenseTracker
 {
     public partial class FrmList : Form
     {
+        // --------------------------------- INITIALIZE --------------------------------- //
         bool TxtExpenseID_HasVal = false;
         bool TxtExpenseName_HasVal = false;
         bool TxtExpenseAmount_HasVal = false;
@@ -30,6 +31,24 @@ namespace ExpenseTracker
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
         }
+
+        private void CmbListName_Layout(object sender, LayoutEventArgs e)
+        {
+
+        }
+        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
+        {
+            String Data = "SELECT * FROM tblexpenses";
+            DataTable dt = Global.Database.ExecuteAdapter(Data);
+
+            CmbExpenseTag.DataSource = dt;
+            CmbExpenseTag.DisplayMember = "Tag";
+            CmbExpenseTag.ValueMember = "Tag";
+
+            Global.Database.Disconnect();
+        }
+
+        // --------------------------------- FUNCTIONS --------------------------------- //
 
         void Clear()
         {
@@ -119,37 +138,7 @@ namespace ExpenseTracker
             }
         }
 
-        private void BtnSearch_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Expense.id = int.Parse(TxtExpenseID.Text);
-
-                String Query = "SELECT * FROM tblexpenses WHERE ExpenseID=@ID";
-                MySqlDataReader mdr = Global.Database.SearchQuery(Query, Expense);
-
-                if (mdr.Read())
-                {
-                    TxtExpenseID.Text = mdr.GetInt32("ExpenseID").ToString();
-                    TxtExpenseName.Text = mdr.GetString("Name");
-                    TxtExpenseAmount.Text = mdr.GetDouble("Amount").ToString();
-                    CmbExpenseTag.Text = mdr.GetString("Tag");
-                    TxtExpenseDate.Text = mdr.GetDateTime("Date").ToString("dd/MM/yyyy");
-                    BtnEdit.Enabled = true;
-                }
-                else
-                {
-                    MessageBox.Show("No Data Found", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    BtnEdit.Enabled = false;
-                }
-
-                Global.Database.Disconnect();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        // --------------------------------- EVENTS --------------------------------- //
 
         private void TxtExpenseID_TextChanged(object sender, EventArgs e)
         {
@@ -221,26 +210,43 @@ namespace ExpenseTracker
             CheckEnable();
         }
 
-        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
+        // --------------------------------- FORM --------------------------------- //
+
+        private void BtnSearch_Click(object sender, EventArgs e)
         {
-            String Data = "SELECT * FROM tblexpenses";
-            DataTable dt = Global.Database.ExecuteAdapter(Data);
+            try
+            {
+                Expense.id = int.Parse(TxtExpenseID.Text);
 
-            CmbExpenseTag.DataSource = dt;
-            CmbExpenseTag.DisplayMember = "Tag";
-            CmbExpenseTag.ValueMember = "Tag";
+                String Query = "SELECT * FROM tblexpenses WHERE ExpenseID=@ID";
+                MySqlDataReader mdr = Global.Database.SearchQuery(Query, Expense);
 
-            Global.Database.Disconnect();
+                if (mdr.Read())
+                {
+                    TxtExpenseID.Text = mdr.GetInt32("ExpenseID").ToString();
+                    TxtExpenseName.Text = mdr.GetString("Name");
+                    TxtExpenseAmount.Text = mdr.GetDouble("Amount").ToString();
+                    CmbExpenseTag.Text = mdr.GetString("Tag");
+                    TxtExpenseDate.Text = mdr.GetDateTime("Date").ToString("dd/MM/yyyy");
+                    BtnEdit.Enabled = true;
+                }
+                else
+                {
+                    MessageBox.Show("No Data Found", "No Data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    BtnEdit.Enabled = false;
+                }
+
+                Global.Database.Disconnect();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnCreateList_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void CmbListName_Layout(object sender, LayoutEventArgs e)
-        {
-
+            TxtNewList.Text = "";
         }
 
         private void BtnEdit_Click(object sender, EventArgs e)

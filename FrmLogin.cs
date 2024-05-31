@@ -13,6 +13,8 @@ namespace ExpenseTracker
 {
     public partial class FrmLogin : Form
     {
+        // --------------------------------- INITIALIZE --------------------------------- //
+
         string username;
         string password;
         int attempts = 3;
@@ -28,6 +30,9 @@ namespace ExpenseTracker
         {
             Global.Database.Connect();
         }
+
+        // --------------------------------- FORM --------------------------------- //
+
 
         private void BtnLogin_Click(object sender, EventArgs e)
         {
@@ -53,7 +58,7 @@ namespace ExpenseTracker
                     if (mdr2.Read())
                     {
                         MessageBox.Show("Login Successful!");
-                        Global.User.updateUser(mdr2.GetInt32("id"), mdr2.GetString("Username"), mdr2.GetString("Password"));
+                        Global.User.UpdateUser(mdr2.GetInt32("id"), mdr2.GetString("Username"), mdr2.GetString("Password"));
                         Functions.SwitchWindow(new FrmHome());
                     }
                     else if (attempts <= 0)

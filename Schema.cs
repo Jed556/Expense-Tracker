@@ -11,12 +11,21 @@ namespace ExpenseTracker
         public int id;
         public string username;
         public string password;
+        public string firstName;
+        public string lastName;
 
-        public void updateUser(int id, string username, string password)
+        public void UpdateUser(int id, string username, string password)
         {
             this.id = id;
             this.username = username;
             this.password = password;
+        }
+
+        public void Clear()
+        {
+            this.id = -1;
+            this.username = "";
+            this.password = "";
         }
     }
 
@@ -30,7 +39,7 @@ namespace ExpenseTracker
         public double amount;
         public DateTime date;
 
-        public void updateExpense(int id, int userId, int listId, string name, string tag, double amount, DateTime date)
+        public void UpdateExpense(int id, int userId, int listId, string name, string tag, double amount, DateTime date)
         {
             this.id = id;
             this.userId = userId;

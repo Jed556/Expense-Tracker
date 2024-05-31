@@ -45,7 +45,7 @@
             this.BtnBack = new System.Windows.Forms.Button();
             this.CmbListName = new System.Windows.Forms.ComboBox();
             this.LbListName = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TxtNewList = new System.Windows.Forms.TextBox();
             this.LbNewList = new System.Windows.Forms.Label();
             this.BtnCreateList = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).BeginInit();
@@ -213,12 +213,12 @@
             this.LbListName.TabIndex = 36;
             this.LbListName.Text = "Tag";
             // 
-            // textBox1
+            // TxtNewList
             // 
-            this.textBox1.Location = new System.Drawing.Point(240, 105);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(238, 20);
-            this.textBox1.TabIndex = 39;
+            this.TxtNewList.Location = new System.Drawing.Point(240, 105);
+            this.TxtNewList.Name = "TxtNewList";
+            this.TxtNewList.Size = new System.Drawing.Size(238, 20);
+            this.TxtNewList.TabIndex = 39;
             // 
             // LbNewList
             // 
@@ -246,7 +246,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 563);
             this.Controls.Add(this.BtnCreateList);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TxtNewList);
             this.Controls.Add(this.LbNewList);
             this.Controls.Add(this.CmbListName);
             this.Controls.Add(this.LbListName);
@@ -292,7 +292,7 @@
         private System.Windows.Forms.Button BtnBack;
         private System.Windows.Forms.ComboBox CmbListName;
         private System.Windows.Forms.Label LbListName;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TxtNewList;
         private System.Windows.Forms.Label LbNewList;
         private System.Windows.Forms.Button BtnCreateList;
     }

@@ -85,7 +85,7 @@
             this.TxtExpenseID.Name = "TxtExpenseID";
             this.TxtExpenseID.Size = new System.Drawing.Size(91, 20);
             this.TxtExpenseID.TabIndex = 4;
-            this.TxtExpenseID.TextChanged += new System.EventHandler(this.TxtDeptID_TextChanged);
+            this.TxtExpenseID.TextChanged += new System.EventHandler(this.TxtExpenseID_TextChanged);
             // 
             // TxtExpenseName
             // 
@@ -93,7 +93,7 @@
             this.TxtExpenseName.Name = "TxtExpenseName";
             this.TxtExpenseName.Size = new System.Drawing.Size(238, 20);
             this.TxtExpenseName.TabIndex = 5;
-            this.TxtExpenseName.TextChanged += new System.EventHandler(this.TxtDeptName_TextChanged);
+            this.TxtExpenseName.TextChanged += new System.EventHandler(this.TxtExpenseName_TextChanged);
             // 
             // TxtExpenseAmount
             // 
@@ -101,7 +101,7 @@
             this.TxtExpenseAmount.Name = "TxtExpenseAmount";
             this.TxtExpenseAmount.Size = new System.Drawing.Size(162, 20);
             this.TxtExpenseAmount.TabIndex = 7;
-            this.TxtExpenseAmount.TextChanged += new System.EventHandler(this.TxtDeptBudget_TextChanged);
+            this.TxtExpenseAmount.TextChanged += new System.EventHandler(this.TxtExpenseAmount_TextChanged);
             // 
             // BtnAdd
             // 
@@ -177,6 +177,7 @@
             this.TxtExpenseDate.Name = "TxtExpenseDate";
             this.TxtExpenseDate.Size = new System.Drawing.Size(137, 20);
             this.TxtExpenseDate.TabIndex = 15;
+            this.TxtExpenseDate.TextChanged += new System.EventHandler(this.TxtExpenseDate_TextChanged);
             // 
             // lbExpenseDate
             // 
@@ -256,7 +257,6 @@
             this.Controls.Add(this.LbDeptID);
             this.Name = "FrmList_Edit";
             this.Text = "Expense Tracker";
-            this.Load += new System.EventHandler(this.FrmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
