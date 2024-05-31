@@ -21,6 +21,7 @@ namespace ExpenseTracker
         public FrmLogin()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void FrmLogin_Load(object sender, EventArgs e)
@@ -40,22 +41,20 @@ namespace ExpenseTracker
                 tempUser.username = TxtUsername.Text;
                 tempUser.password = TxtPassword.Text;
 
-                String Query1 = "SELECT * FROM tblusers WHERE username = @Username";
+                String Query1 = "SELECT * FROM tblusers WHERE Username = @Username";
                 MySqlDataReader mdr1 = Global.Database.SearchQuery(Query1, tempUser);
 
                 if (mdr1.Read())
                 {
                     Global.Database.Disconnect();
-                    String Query2 = "SELECT * FROM tblusers WHERE username = @Username AND password = @Password";
+                    String Query2 = "SELECT * FROM tblusers WHERE Username = @Username AND Password = @Password";
                     MySqlDataReader mdr2 = Global.Database.SearchQuery(Query2, tempUser);
 
                     if (mdr2.Read())
                     {
                         MessageBox.Show("Login Successful!");
-                        Global.User.updateUser(mdr2.GetInt32("id"), mdr2.GetString("username"), mdr2.GetString("password"));
-                        FrmHome FrmHome = new FrmHome();
-                        FrmHome.Show();
-                        this.Hide();
+                        Global.User.updateUser(mdr2.GetInt32("id"), mdr2.GetString("Username"), mdr2.GetString("Password"));
+                        Functions.SwitchWindow(new FrmHome());
                     }
                     else if (attempts <= 0)
                     {

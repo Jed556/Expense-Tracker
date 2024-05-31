@@ -32,7 +32,7 @@
             this.BtnLists = new System.Windows.Forms.Button();
             this.BtnProfile = new System.Windows.Forms.Button();
             this.BtnUpdate = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.BtnAbout = new System.Windows.Forms.Button();
             this.BtnLogout = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -64,6 +64,7 @@
             this.BtnProfile.TabIndex = 2;
             this.BtnProfile.Text = "View Proifile";
             this.BtnProfile.UseVisualStyleBackColor = true;
+            this.BtnProfile.Click += new System.EventHandler(this.BtnProfile_Click);
             // 
             // BtnUpdate
             // 
@@ -73,15 +74,17 @@
             this.BtnUpdate.TabIndex = 3;
             this.BtnUpdate.Text = "Updates";
             this.BtnUpdate.UseVisualStyleBackColor = true;
+            this.BtnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
-            // button1
+            // BtnAbout
             // 
-            this.button1.Location = new System.Drawing.Point(43, 265);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 100);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "About";
-            this.button1.UseVisualStyleBackColor = true;
+            this.BtnAbout.Location = new System.Drawing.Point(43, 265);
+            this.BtnAbout.Name = "BtnAbout";
+            this.BtnAbout.Size = new System.Drawing.Size(160, 100);
+            this.BtnAbout.TabIndex = 4;
+            this.BtnAbout.Text = "About";
+            this.BtnAbout.UseVisualStyleBackColor = true;
+            this.BtnAbout.Click += new System.EventHandler(this.BtnAbout_Click);
             // 
             // BtnLogout
             // 
@@ -91,6 +94,7 @@
             this.BtnLogout.TabIndex = 5;
             this.BtnLogout.Text = "Logout";
             this.BtnLogout.UseVisualStyleBackColor = true;
+            this.BtnLogout.Click += new System.EventHandler(this.BtnLogout_Click);
             // 
             // FrmHome
             // 
@@ -98,7 +102,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 411);
             this.Controls.Add(this.BtnLogout);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.BtnAbout);
             this.Controls.Add(this.BtnUpdate);
             this.Controls.Add(this.BtnProfile);
             this.Controls.Add(this.BtnLists);
@@ -116,7 +120,7 @@
         private System.Windows.Forms.Button BtnLists;
         private System.Windows.Forms.Button BtnProfile;
         private System.Windows.Forms.Button BtnUpdate;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button BtnAbout;
         private System.Windows.Forms.Button BtnLogout;
     }
 }

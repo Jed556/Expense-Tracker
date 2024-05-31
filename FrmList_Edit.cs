@@ -25,17 +25,20 @@ namespace ExpenseTracker
         bool TxtExpenseAmount_HasVal = false;
 
         Expense Expense = new Expense();
+        List<Expense> ExpenseDeleteList = new List<Expense>();
+        List<Expense> ExpenseAddList = new List<Expense>();
+        List<Expense> ExpenseUpdateList = new List<Expense>();
+
+        DataTable dt = Global.Database.ExecuteAdapter("SELECT * FROM tblexpenses WHERE ListID = @ListID && UserID = @UserID");
 
         public FrmList_Edit()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            String Query = "SELECT * FROM tblexpenses";
-            DataTable dt = Global.Database.ExecuteAdapter(Query);
-            
             DgvTable.DataSource = dt;
             Global.Database.Disconnect();
         }
@@ -60,8 +63,6 @@ namespace ExpenseTracker
             CmbExpenseTag.SelectedIndex = -1;
             TxtExpenseAmount.Clear();
             TxtExpenseDate.Clear();
-            TxtExpenseDate.Visible = false;
-            lbExpenseDate.Visible = false;
 
             Expense.id = 0;
             Expense.name = "";
@@ -69,10 +70,10 @@ namespace ExpenseTracker
             Expense.amount = 0;
             Expense.date = DateTime.Now;
         }
-        
+
         void DisableButtons()
         {
-            BtnSave.Enabled = false;
+            BtnAdd.Enabled = false;
             BtnSearch.Enabled = false;
             BtnUpdate.Enabled = false;
             BtnDel.Enabled = false;
@@ -92,46 +93,61 @@ namespace ExpenseTracker
         {
             if (TxtExpenseName_HasVal && TxtExpenseAmount_HasVal)
             {
-                BtnSave.Enabled = true;
-            } else {
-                BtnSave.Enabled = false;
+                BtnAdd.Enabled = true;
+            }
+            else
+            {
+                BtnAdd.Enabled = false;
             }
 
             if (TxtExpenseID_HasVal)
             {
                 BtnSearch.Enabled = true;
-            } else {
+            }
+            else
+            {
                 BtnSearch.Enabled = false;
             }
 
             if (TxtExpenseID_HasVal && TxtExpenseName_HasVal && TxtExpenseAmount_HasVal)
             {
                 BtnUpdate.Enabled = true;
-            } else {
+            }
+            else
+            {
                 BtnUpdate.Enabled = false;
             }
 
             if (TxtExpenseID_HasVal)
             {
                 BtnDel.Enabled = true;
-            } else {
+            }
+            else
+            {
                 BtnDel.Enabled = false;
             }
-        }   
+        }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
             Expense.name = TxtExpenseName.Text;
             Expense.amount = double.Parse(TxtExpenseAmount.Text);
 
             String Query = "INSERT INTO tblexpenses(ExpenseID, Name, Amount, Date) VALUES (@ID, @Name, @Amount, @Date)";
 
+            if (TxtExpenseDate.Text != "")
+            {
+                Expense.date = DateTime.Parse(TxtExpenseDate.Text);
+            } else {
+                Expense.date = DateTime.Now;
+            }
+
             Global.Database.ExecuteQuery(Query, Expense);
 
             MessageBox.Show("Record Inserted Successfully", "Record Inserted", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
+
             ClearValues();
-            BtnSave.Enabled = false;
+            BtnAdd.Enabled = false;
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)
@@ -151,8 +167,6 @@ namespace ExpenseTracker
                     CmbExpenseTag.Text = mdr.GetString("Tag");
                     TxtExpenseDate.Text = mdr.GetDateTime("Date").ToString("dd/MM/yyyy");
                     BtnDel.Enabled = true;
-                    TxtExpenseDate.Visible = true;
-                    lbExpenseDate.Visible = true;
                 }
                 else
                 {
@@ -161,7 +175,8 @@ namespace ExpenseTracker
                 }
 
                 Global.Database.Disconnect();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -205,10 +220,10 @@ namespace ExpenseTracker
             }
         }
 
-        private void BtnClose_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Global.Database.Disconnect();
-            Application.Exit();
+            Functions.SwitchWindow(new FrmList());
         }
 
         private void TxtDeptID_TextChanged(object sender, EventArgs e)
@@ -255,12 +270,12 @@ namespace ExpenseTracker
 
         private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
         {
-           String Data = "SELECT * FROM tblexpenses";
-           DataTable dt = Global.Database.ExecuteAdapter(Data);
+            String Data = "SELECT * FROM tblexpenses";
+            DataTable dt = Global.Database.ExecuteAdapter(Data);
 
-           CmbExpenseTag.DataSource = dt;
-           CmbExpenseTag.DisplayMember = "Tag";
-           CmbExpenseTag.ValueMember = "Tag";
+            CmbExpenseTag.DataSource = dt;
+            CmbExpenseTag.DisplayMember = "Tag";
+            CmbExpenseTag.ValueMember = "Tag";
 
             Global.Database.Disconnect();
         }
@@ -280,8 +295,60 @@ namespace ExpenseTracker
             bs.DataSource = dt;
             mda.Update(dt);
 
-
             Global.Database.Disconnect();
+        }
+
+
+        private void DgvTable_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DataGridViewRow row = this.DgvTable.Rows[e.RowIndex];
+
+            if (e.RowIndex >= 0 && !row.IsNewRow)
+            {
+                TxtExpenseID.Text = row.Cells[0].Value.ToString();
+                TxtExpenseName.Text = row.Cells[3].Value.ToString();
+                CmbExpenseTag.Text = row.Cells[4].Value.ToString();
+                TxtExpenseAmount.Text = row.Cells[5].Value.ToString();
+                TxtExpenseDate.Text = DateTime.Parse(row.Cells[6].Value.ToString()).ToShortDateString();
+            }
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            String Query = "UPDATE tblexpenses SET Name=@Name, Tag=@Tag, Amount=@Amount, Date=@Date WHERE ExpenseID=@ID AND UserID=@UserID AND ListID=@ListID";
+
+            foreach (DataGridViewRow row in DgvTable.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    Expense.id = int.Parse(row.Cells[0].Value.ToString());
+                    Expense.userId = int.Parse(row.Cells[1].Value.ToString());
+                    Expense.listId = int.Parse(row.Cells[2].Value.ToString());
+                    Expense.name = row.Cells[3].Value.ToString();
+                    Expense.tag = row.Cells[4].Value.ToString();
+                    Expense.amount = double.Parse(row.Cells[5].Value.ToString());
+                    Expense.date = DateTime.Parse(row.Cells[6].Value.ToString());
+
+                    Global.Database.ExecuteQuery(Query, Expense);
+
+                }
+
+            } 
+            foreach (Expense expense in ExpenseDeleteList)
+                {
+                    Query = "DELETE FROM tblexpenses WHERE ExpenseID=@ID AND UserID=@UserID AND ListID=@ListID";
+                    Global.Database.ExecuteQuery(Query, expense);
+                }
+        }
+
+        private void DgvTable_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            Expense DelExpense = new Expense();
+            DelExpense.id = int.Parse(e.Row.Cells[0].Value.ToString());
+            DelExpense.userId = int.Parse(e.Row.Cells[1].Value.ToString());
+            DelExpense.listId = int.Parse(e.Row.Cells[2].Value.ToString());
+
+            ExpenseDeleteList.Add(DelExpense);
         }
     }
 }

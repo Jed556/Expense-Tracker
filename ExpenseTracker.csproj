@@ -50,18 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmList.Designer.cs">
+      <DependentUpon>FrmList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Functions.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="FrmHome.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmHome.Designer.cs">
       <DependentUpon>FrmHome.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FrmList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmList.Designer.cs">
-      <DependentUpon>FrmList.cs</DependentUpon>
     </Compile>
     <Compile Include="Schema.cs" />
     <Compile Include="Database.cs" />
@@ -81,6 +82,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmHome.resx">
       <DependentUpon>FrmHome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmList.resx">
+      <DependentUpon>FrmList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmList_Edit.resx">
       <DependentUpon>FrmList_Edit.cs</DependentUpon>

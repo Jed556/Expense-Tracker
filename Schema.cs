@@ -24,15 +24,17 @@ namespace ExpenseTracker
     {
         public int id;
         public int userId;
+        public int listId;
         public string name;
         public string tag;
         public double amount;
         public DateTime date;
 
-        public void updateExpense(int id, string name, string tag, double amount, DateTime date, int userId)
+        public void updateExpense(int id, int userId, int listId, string name, string tag, double amount, DateTime date)
         {
             this.id = id;
             this.userId = userId;
+            this.listId = listId;
             this.name = name;
             this.tag = tag;
             this.amount = amount;

@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace ExpenseTracker
 {
-     class Database
+    class Database
     {
 
         private String connectionString = "";
@@ -35,12 +35,7 @@ namespace ExpenseTracker
             catch (Exception ex)
             {
                 MessageBox.Show("Error Connnecting to Database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                foreach (Form form in Application.OpenForms)
-                {
-                    form.Close();
-                }
-                FrmLogin FrmLogin = new FrmLogin();
-                FrmLogin.Show();
+                Functions.SwitchWindow(new FrmLogin());
             }
         }
 
@@ -60,6 +55,9 @@ namespace ExpenseTracker
             BindingSource bs = new BindingSource();
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
+            command.Parameters.AddWithValue("@ListID", Global.User);
+            command.Parameters.AddWithValue("@UserID", Global.User.id);
+
             mda.SelectCommand = command;
             mda.Fill(dt);
             bs.DataSource = dt;
@@ -73,8 +71,10 @@ namespace ExpenseTracker
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
-            command.Parameters.AddWithValue("@userID", Schema.userId);
+            command.Parameters.AddWithValue("@UserID", Schema.userId);
+            command.Parameters.AddWithValue("@ListID", Schema.userId);
             command.Parameters.AddWithValue("@Name", Schema.name);
+            command.Parameters.AddWithValue("@Tag", Schema.tag);
             command.Parameters.AddWithValue("@Amount", Schema.amount);
             command.Parameters.AddWithValue("@Date", Schema.date);
 
@@ -107,7 +107,7 @@ namespace ExpenseTracker
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
-            command.Parameters.AddWithValue("@userID", Schema.id);
+            command.Parameters.AddWithValue("@UserID", Schema.id);
             command.Parameters.AddWithValue("@Name", Schema.name);
             command.Parameters.AddWithValue("@Amount", Schema.amount);
             command.Parameters.AddWithValue("@Date", Schema.date);

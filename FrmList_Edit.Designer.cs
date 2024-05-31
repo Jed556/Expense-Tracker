@@ -34,8 +34,8 @@
             this.TxtExpenseID = new System.Windows.Forms.TextBox();
             this.TxtExpenseName = new System.Windows.Forms.TextBox();
             this.TxtExpenseAmount = new System.Windows.Forms.TextBox();
-            this.BtnSave = new System.Windows.Forms.Button();
-            this.BtnClose = new System.Windows.Forms.Button();
+            this.BtnAdd = new System.Windows.Forms.Button();
+            this.BtnCancel = new System.Windows.Forms.Button();
             this.BtnSearch = new System.Windows.Forms.Button();
             this.BtnUpdate = new System.Windows.Forms.Button();
             this.LbTitle = new System.Windows.Forms.Label();
@@ -45,6 +45,7 @@
             this.LbExpenseTag = new System.Windows.Forms.Label();
             this.CmbExpenseTag = new System.Windows.Forms.ComboBox();
             this.DgvTable = new System.Windows.Forms.DataGridView();
+            this.BtnSave = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -102,27 +103,27 @@
             this.TxtExpenseAmount.TabIndex = 7;
             this.TxtExpenseAmount.TextChanged += new System.EventHandler(this.TxtDeptBudget_TextChanged);
             // 
-            // BtnSave
+            // BtnAdd
             // 
-            this.BtnSave.Enabled = false;
-            this.BtnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.BtnSave.Location = new System.Drawing.Point(289, 156);
-            this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(110, 40);
-            this.BtnSave.TabIndex = 8;
-            this.BtnSave.Text = "Save";
-            this.BtnSave.UseVisualStyleBackColor = true;
-            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.BtnAdd.Enabled = false;
+            this.BtnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.BtnAdd.Location = new System.Drawing.Point(289, 156);
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(110, 40);
+            this.BtnAdd.TabIndex = 8;
+            this.BtnAdd.Text = "Add";
+            this.BtnAdd.UseVisualStyleBackColor = true;
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
-            // BtnClose
+            // BtnCancel
             // 
-            this.BtnClose.Location = new System.Drawing.Point(49, 454);
-            this.BtnClose.Name = "BtnClose";
-            this.BtnClose.Size = new System.Drawing.Size(237, 30);
-            this.BtnClose.TabIndex = 9;
-            this.BtnClose.Text = "Close";
-            this.BtnClose.UseVisualStyleBackColor = true;
-            this.BtnClose.Click += new System.EventHandler(this.BtnClose_Click);
+            this.BtnCancel.Location = new System.Drawing.Point(49, 454);
+            this.BtnCancel.Name = "BtnCancel";
+            this.BtnCancel.Size = new System.Drawing.Size(110, 30);
+            this.BtnCancel.TabIndex = 9;
+            this.BtnCancel.Text = "Cancel";
+            this.BtnCancel.UseVisualStyleBackColor = true;
+            this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // BtnSearch
             // 
@@ -172,12 +173,10 @@
             // 
             // TxtExpenseDate
             // 
-            this.TxtExpenseDate.Enabled = false;
             this.TxtExpenseDate.Location = new System.Drawing.Point(824, 116);
             this.TxtExpenseDate.Name = "TxtExpenseDate";
             this.TxtExpenseDate.Size = new System.Drawing.Size(137, 20);
             this.TxtExpenseDate.TabIndex = 15;
-            this.TxtExpenseDate.Visible = false;
             // 
             // lbExpenseDate
             // 
@@ -188,7 +187,6 @@
             this.lbExpenseDate.Size = new System.Drawing.Size(33, 15);
             this.lbExpenseDate.TabIndex = 14;
             this.lbExpenseDate.Text = "Date";
-            this.lbExpenseDate.Visible = false;
             // 
             // LbExpenseTag
             // 
@@ -212,18 +210,33 @@
             // 
             // DgvTable
             // 
+            this.DgvTable.AllowUserToResizeColumns = false;
+            this.DgvTable.AllowUserToResizeRows = false;
             this.DgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvTable.Location = new System.Drawing.Point(49, 210);
             this.DgvTable.Name = "DgvTable";
-            this.DgvTable.Size = new System.Drawing.Size(911, 142);
+            this.DgvTable.Size = new System.Drawing.Size(911, 226);
             this.DgvTable.TabIndex = 20;
+            this.DgvTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTable_CellClick);
+            this.DgvTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvTable_UserDeletedRow);
             this.DgvTable.Layout += new System.Windows.Forms.LayoutEventHandler(this.DgvTable_Layout);
             // 
-            // FrmMain
+            // BtnSave
+            // 
+            this.BtnSave.Location = new System.Drawing.Point(176, 454);
+            this.BtnSave.Name = "BtnSave";
+            this.BtnSave.Size = new System.Drawing.Size(110, 30);
+            this.BtnSave.TabIndex = 21;
+            this.BtnSave.Text = "Save";
+            this.BtnSave.UseVisualStyleBackColor = true;
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            // 
+            // FrmList_Edit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 523);
+            this.Controls.Add(this.BtnSave);
             this.Controls.Add(this.DgvTable);
             this.Controls.Add(this.CmbExpenseTag);
             this.Controls.Add(this.LbExpenseTag);
@@ -233,15 +246,15 @@
             this.Controls.Add(this.LbTitle);
             this.Controls.Add(this.BtnUpdate);
             this.Controls.Add(this.BtnSearch);
-            this.Controls.Add(this.BtnClose);
-            this.Controls.Add(this.BtnSave);
+            this.Controls.Add(this.BtnCancel);
+            this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.TxtExpenseAmount);
             this.Controls.Add(this.TxtExpenseName);
             this.Controls.Add(this.TxtExpenseID);
             this.Controls.Add(this.LbExpenseAmount);
             this.Controls.Add(this.LbDeptName);
             this.Controls.Add(this.LbDeptID);
-            this.Name = "FrmMain";
+            this.Name = "FrmList_Edit";
             this.Text = "Expense Tracker";
             this.Load += new System.EventHandler(this.FrmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).EndInit();
@@ -258,8 +271,8 @@
         private System.Windows.Forms.TextBox TxtExpenseID;
         private System.Windows.Forms.TextBox TxtExpenseName;
         private System.Windows.Forms.TextBox TxtExpenseAmount;
-        private System.Windows.Forms.Button BtnSave;
-        private System.Windows.Forms.Button BtnClose;
+        private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.Button BtnCancel;
         private System.Windows.Forms.Button BtnSearch;
         private System.Windows.Forms.Button BtnUpdate;
         private System.Windows.Forms.Label LbTitle;
@@ -269,6 +282,7 @@
         private System.Windows.Forms.Label LbExpenseTag;
         private System.Windows.Forms.ComboBox CmbExpenseTag;
         private System.Windows.Forms.DataGridView DgvTable;
+        private System.Windows.Forms.Button BtnSave;
     }
 }
 
