@@ -52,12 +52,13 @@
             this.BtnLists.Name = "BtnLists";
             this.BtnLists.Size = new System.Drawing.Size(160, 100);
             this.BtnLists.TabIndex = 1;
-            this.BtnLists.Text = "View Lists";
+            this.BtnLists.Text = "View List";
             this.BtnLists.UseVisualStyleBackColor = true;
             this.BtnLists.Click += new System.EventHandler(this.BtnLists_Click);
             // 
             // BtnProfile
             // 
+            this.BtnProfile.Enabled = false;
             this.BtnProfile.Location = new System.Drawing.Point(233, 137);
             this.BtnProfile.Name = "BtnProfile";
             this.BtnProfile.Size = new System.Drawing.Size(160, 100);
@@ -78,6 +79,7 @@
             // 
             // BtnAbout
             // 
+            this.BtnAbout.Enabled = false;
             this.BtnAbout.Location = new System.Drawing.Point(43, 265);
             this.BtnAbout.Name = "BtnAbout";
             this.BtnAbout.Size = new System.Drawing.Size(160, 100);

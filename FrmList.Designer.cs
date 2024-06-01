@@ -53,11 +53,14 @@
             // 
             // DgvTable
             // 
+            this.DgvTable.AllowUserToAddRows = false;
+            this.DgvTable.AllowUserToDeleteRows = false;
             this.DgvTable.AllowUserToResizeColumns = false;
             this.DgvTable.AllowUserToResizeRows = false;
             this.DgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvTable.Location = new System.Drawing.Point(49, 261);
             this.DgvTable.Name = "DgvTable";
+            this.DgvTable.ReadOnly = true;
             this.DgvTable.Size = new System.Drawing.Size(911, 226);
             this.DgvTable.TabIndex = 21;
             // 
@@ -201,6 +204,7 @@
             this.CmbListName.Size = new System.Drawing.Size(162, 21);
             this.CmbListName.TabIndex = 37;
             this.CmbListName.Text = "Select Tag";
+            this.CmbListName.SelectedIndexChanged += new System.EventHandler(this.CmbListName_SelectedIndexChanged);
             this.CmbListName.Layout += new System.Windows.Forms.LayoutEventHandler(this.CmbListName_Layout);
             // 
             // LbListName

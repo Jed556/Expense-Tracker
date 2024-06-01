@@ -83,5 +83,20 @@ namespace ExpenseTracker
                 Global.Database.Disconnect();
             }
         }
+
+        private void BtnRegister_Click(object sender, EventArgs e)
+        {
+            if (TxtUsername.Text == "" || TxtPassword.Text == "")
+            {
+                MessageBox.Show("Please fill in the required fields.");
+            }
+            else
+            {
+                tempUser.username = TxtUsername.Text;
+                tempUser.password = TxtPassword.Text;
+                Global.Database.ExecuteQuery("INSERT INTO tblusers (Username, Password) VALUES (@Username, @Password)", tempUser);
+                MessageBox.Show("User Registered!");
+            }
+        }
     }
 }

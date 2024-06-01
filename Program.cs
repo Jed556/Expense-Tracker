@@ -16,6 +16,13 @@ namespace ExpenseTracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            //Test
+            //Global.User.id = 1;
+            Global.ExpenseList.id = 1;
+            //new FrmList().Show();s
+            //new FrmList_Edit().Show();
+
             new FrmLogin().Show();
             Application.Run();
         }

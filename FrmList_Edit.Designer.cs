@@ -46,6 +46,8 @@
             this.CmbExpenseTag = new System.Windows.Forms.ComboBox();
             this.DgvTable = new System.Windows.Forms.DataGridView();
             this.BtnSave = new System.Windows.Forms.Button();
+            this.TxtTotalAmount = new System.Windows.Forms.TextBox();
+            this.LbTotalAmount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,7 +109,7 @@
             // 
             this.BtnAdd.Enabled = false;
             this.BtnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.BtnAdd.Location = new System.Drawing.Point(289, 156);
+            this.BtnAdd.Location = new System.Drawing.Point(169, 153);
             this.BtnAdd.Name = "BtnAdd";
             this.BtnAdd.Size = new System.Drawing.Size(110, 40);
             this.BtnAdd.TabIndex = 8;
@@ -121,7 +123,7 @@
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(110, 30);
             this.BtnCancel.TabIndex = 9;
-            this.BtnCancel.Text = "Cancel";
+            this.BtnCancel.Text = "Back";
             this.BtnCancel.UseVisualStyleBackColor = true;
             this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
@@ -129,19 +131,20 @@
             // 
             this.BtnSearch.Enabled = false;
             this.BtnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.BtnSearch.Location = new System.Drawing.Point(49, 156);
+            this.BtnSearch.Location = new System.Drawing.Point(405, 153);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(110, 40);
             this.BtnSearch.TabIndex = 10;
             this.BtnSearch.Text = "Search";
             this.BtnSearch.UseVisualStyleBackColor = true;
+            this.BtnSearch.Visible = false;
             this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // BtnUpdate
             // 
             this.BtnUpdate.Enabled = false;
             this.BtnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.BtnUpdate.Location = new System.Drawing.Point(169, 156);
+            this.BtnUpdate.Location = new System.Drawing.Point(49, 153);
             this.BtnUpdate.Name = "BtnUpdate";
             this.BtnUpdate.Size = new System.Drawing.Size(110, 40);
             this.BtnUpdate.TabIndex = 11;
@@ -157,13 +160,13 @@
             this.LbTitle.Name = "LbTitle";
             this.LbTitle.Size = new System.Drawing.Size(147, 31);
             this.LbTitle.TabIndex = 12;
-            this.LbTitle.Text = "Editing List";
+            this.LbTitle.Text = "List Viewer";
             // 
             // BtnDel
             // 
             this.BtnDel.Enabled = false;
             this.BtnDel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.BtnDel.Location = new System.Drawing.Point(409, 156);
+            this.BtnDel.Location = new System.Drawing.Point(289, 153);
             this.BtnDel.Name = "BtnDel";
             this.BtnDel.Size = new System.Drawing.Size(110, 40);
             this.BtnDel.TabIndex = 13;
@@ -219,6 +222,8 @@
             this.DgvTable.Size = new System.Drawing.Size(911, 226);
             this.DgvTable.TabIndex = 20;
             this.DgvTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTable_CellClick);
+            this.DgvTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTable_CellValueChanged);
+            this.DgvTable.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvTable_UserAddedRow);
             this.DgvTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvTable_UserDeletedRow);
             this.DgvTable.Layout += new System.Windows.Forms.LayoutEventHandler(this.DgvTable_Layout);
             // 
@@ -232,11 +237,31 @@
             this.BtnSave.UseVisualStyleBackColor = true;
             this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
+            // TxtTotalAmount
+            // 
+            this.TxtTotalAmount.Location = new System.Drawing.Point(860, 460);
+            this.TxtTotalAmount.Name = "TxtTotalAmount";
+            this.TxtTotalAmount.ReadOnly = true;
+            this.TxtTotalAmount.Size = new System.Drawing.Size(100, 20);
+            this.TxtTotalAmount.TabIndex = 22;
+            // 
+            // LbTotalAmount
+            // 
+            this.LbTotalAmount.AutoSize = true;
+            this.LbTotalAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbTotalAmount.Location = new System.Drawing.Point(821, 463);
+            this.LbTotalAmount.Name = "LbTotalAmount";
+            this.LbTotalAmount.Size = new System.Drawing.Size(34, 15);
+            this.LbTotalAmount.TabIndex = 23;
+            this.LbTotalAmount.Text = "Total";
+            // 
             // FrmList_Edit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1014, 523);
+            this.Controls.Add(this.LbTotalAmount);
+            this.Controls.Add(this.TxtTotalAmount);
             this.Controls.Add(this.BtnSave);
             this.Controls.Add(this.DgvTable);
             this.Controls.Add(this.CmbExpenseTag);
@@ -283,6 +308,8 @@
         private System.Windows.Forms.ComboBox CmbExpenseTag;
         private System.Windows.Forms.DataGridView DgvTable;
         private System.Windows.Forms.Button BtnSave;
+        private System.Windows.Forms.TextBox TxtTotalAmount;
+        private System.Windows.Forms.Label LbTotalAmount;
     }
 }
 

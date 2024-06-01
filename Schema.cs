@@ -28,6 +28,19 @@ namespace ExpenseTracker
             this.password = "";
         }
     }
+    struct ExpenseList
+    {
+        public int id;
+        public int userId;
+        public string name;
+
+        public void UpdateExpenselist(int id, int userId, string name)
+        {
+            this.id = id;
+            this.userId = userId;
+            this.name = name;
+        }
+    }
 
     struct Expense
     {

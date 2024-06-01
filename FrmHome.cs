@@ -27,7 +27,7 @@ namespace ExpenseTracker
 
         private void BtnLists_Click(object sender, EventArgs e)
         {
-            Functions.SwitchWindow(new FrmList());
+            Functions.SwitchWindow(new FrmList_Edit());
         }
 
         private void BtnProfile_Click(object sender, EventArgs e)

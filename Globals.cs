@@ -9,6 +9,7 @@ namespace ExpenseTracker
     internal static class Global
     {
         public static User User = new User();
+        public static ExpenseList ExpenseList = new ExpenseList();
         public static Database Database = new Database("datasource=localhost;port=3306;Initial Catalog='expensetracker';username=root;password=");
     }
 
