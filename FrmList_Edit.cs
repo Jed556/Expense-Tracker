@@ -46,30 +46,17 @@ namespace ExpenseTracker
             CmbExpenseTag_Update();
         }
 
-        private void CmbExpenseTag_Layout(object sender, LayoutEventArgs e)
+        private void CmbExpenseTag_Update()
         {
-            //String Data = "SELECT * FROM tblexpenses";
-            // DataTable dt = Global.Database.ExecuteAdapter(Data);
-            //dt = dt.DefaultView.ToTable(true, "Tag");
+            String Data = "SELECT * FROM tblexpenses WHERE UserID=@UserID AND ListID=@ListID";
+            DataTable dt = Global.Database.ExecuteAdapter(Data);
+            dt = dt.DefaultView.ToTable(true, "Tag");
 
-            //CmbExpenseTag.DataSource = dt;
-            //CmbExpenseTag.DisplayMember = "Tag";
-            //CmbExpenseTag.ValueMember = "Tag";
+            CmbExpenseTag.DataSource = dt;
+            CmbExpenseTag.DisplayMember = "Tag";
+            CmbExpenseTag.ValueMember = "Tag";
 
-            //Global.Database.Disconnect();
-        }
-
-        private void CmbExpenseTag_Update() {
-            CmbExpenseTag.Items.Clear();
-            CmbExpenseTag.Items.Add("Food");
-            CmbExpenseTag.Items.Add("Groceries");
-            CmbExpenseTag.Items.Add("Health");
-            CmbExpenseTag.Items.Add("Devices");
-            CmbExpenseTag.Items.Add("Transportation");
-            CmbExpenseTag.Items.Add("Utilities");
-            CmbExpenseTag.Items.Add("Rent");
-            CmbExpenseTag.Items.Add("Entertainment");
-            CmbExpenseTag.Items.Add("Others");
+            Global.Database.Disconnect();
         }
 
         private void DgvTable_Layout(object sender, LayoutEventArgs e)
@@ -311,9 +298,8 @@ namespace ExpenseTracker
             Expense.name = TxtExpenseName.Text;
             Expense.amount = double.Parse(TxtExpenseAmount.Text);
             Expense.tag = CmbExpenseTag.SelectedItem.ToString();
-            Expense.date = DateTime.Parse(TxtExpenseDate.Text);
 
-            String Query = "INSERT INTO tblexpenses(ListID, UserID, Name, Amount, Date) VALUES (@ListID, @UserID, @Name, @Amount, @Date)";
+            String Query = "INSERT INTO tblexpenses(ListID, UserID, Name, Tag, Amount, Date) VALUES (@ListID, @UserID, @Name, @Tag, @Amount, @Date)";
 
             if (TxtExpenseDate.Text != "")
             {
@@ -375,7 +361,10 @@ namespace ExpenseTracker
             DialogResult result = MessageBox.Show("Are you sure you want to delete this record?", "Delete Record", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             Expense.id = int.Parse(TxtExpenseID.Text);
+            Expense.userId = Global.User.id;
+            Expense.listId = Global.ExpenseList.id;
             ExpenseDeleteList.Add(Expense);
+
 
             ClearValues();
             UpdateTotalAmount();

@@ -57,6 +57,7 @@
             this.DgvTable.AllowUserToDeleteRows = false;
             this.DgvTable.AllowUserToResizeColumns = false;
             this.DgvTable.AllowUserToResizeRows = false;
+            this.DgvTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
             this.DgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.DgvTable.Location = new System.Drawing.Point(49, 261);
             this.DgvTable.Name = "DgvTable";
@@ -67,10 +68,11 @@
             // LbTitle
             // 
             this.LbTitle.AutoSize = true;
-            this.LbTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
+            this.LbTitle.Font = new System.Drawing.Font("Poppins", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
             this.LbTitle.Location = new System.Drawing.Point(43, 32);
             this.LbTitle.Name = "LbTitle";
-            this.LbTitle.Size = new System.Drawing.Size(159, 31);
+            this.LbTitle.Size = new System.Drawing.Size(185, 48);
             this.LbTitle.TabIndex = 22;
             this.LbTitle.Text = "Viewing List";
             // 
@@ -86,10 +88,11 @@
             // LbExpenseTag
             // 
             this.LbExpenseTag.AutoSize = true;
-            this.LbExpenseTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbExpenseTag.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbExpenseTag.ForeColor = System.Drawing.Color.White;
             this.LbExpenseTag.Location = new System.Drawing.Point(436, 143);
             this.LbExpenseTag.Name = "LbExpenseTag";
-            this.LbExpenseTag.Size = new System.Drawing.Size(28, 15);
+            this.LbExpenseTag.Size = new System.Drawing.Size(30, 19);
             this.LbExpenseTag.TabIndex = 32;
             this.LbExpenseTag.Text = "Tag";
             // 
@@ -103,23 +106,27 @@
             // lbExpenseDate
             // 
             this.lbExpenseDate.AutoSize = true;
-            this.lbExpenseDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.lbExpenseDate.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbExpenseDate.ForeColor = System.Drawing.Color.White;
             this.lbExpenseDate.Location = new System.Drawing.Point(823, 143);
             this.lbExpenseDate.Name = "lbExpenseDate";
-            this.lbExpenseDate.Size = new System.Drawing.Size(33, 15);
+            this.lbExpenseDate.Size = new System.Drawing.Size(35, 19);
             this.lbExpenseDate.TabIndex = 30;
             this.lbExpenseDate.Text = "Date";
             // 
             // BtnSearch
             // 
+            this.BtnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
             this.BtnSearch.Enabled = false;
-            this.BtnSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.BtnSearch.FlatAppearance.BorderSize = 3;
+            this.BtnSearch.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnSearch.ForeColor = System.Drawing.Color.White;
             this.BtnSearch.Location = new System.Drawing.Point(49, 201);
             this.BtnSearch.Name = "BtnSearch";
             this.BtnSearch.Size = new System.Drawing.Size(110, 40);
             this.BtnSearch.TabIndex = 29;
             this.BtnSearch.Text = "Search";
-            this.BtnSearch.UseVisualStyleBackColor = true;
+            this.BtnSearch.UseVisualStyleBackColor = false;
             this.BtnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // TxtExpenseAmount
@@ -147,53 +154,63 @@
             // LbExpenseAmount
             // 
             this.LbExpenseAmount.AutoSize = true;
-            this.LbExpenseAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbExpenseAmount.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbExpenseAmount.ForeColor = System.Drawing.Color.White;
             this.LbExpenseAmount.Location = new System.Drawing.Point(623, 143);
             this.LbExpenseAmount.Name = "LbExpenseAmount";
-            this.LbExpenseAmount.Size = new System.Drawing.Size(49, 15);
+            this.LbExpenseAmount.Size = new System.Drawing.Size(54, 19);
             this.LbExpenseAmount.TabIndex = 25;
             this.LbExpenseAmount.Text = "Amount";
             // 
             // LbDeptName
             // 
             this.LbDeptName.AutoSize = true;
-            this.LbDeptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbDeptName.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbDeptName.ForeColor = System.Drawing.Color.White;
             this.LbDeptName.Location = new System.Drawing.Point(173, 143);
             this.LbDeptName.Name = "LbDeptName";
-            this.LbDeptName.Size = new System.Drawing.Size(41, 15);
+            this.LbDeptName.Size = new System.Drawing.Size(43, 19);
             this.LbDeptName.TabIndex = 24;
             this.LbDeptName.Text = "Name";
             // 
             // LbDeptID
             // 
             this.LbDeptID.AutoSize = true;
-            this.LbDeptID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbDeptID.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbDeptID.ForeColor = System.Drawing.Color.White;
             this.LbDeptID.Location = new System.Drawing.Point(46, 143);
             this.LbDeptID.Name = "LbDeptID";
-            this.LbDeptID.Size = new System.Drawing.Size(70, 15);
+            this.LbDeptID.Size = new System.Drawing.Size(68, 19);
             this.LbDeptID.TabIndex = 23;
             this.LbDeptID.Text = "Expense ID";
             // 
             // BtnEdit
             // 
+            this.BtnEdit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
             this.BtnEdit.Enabled = false;
-            this.BtnEdit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.BtnEdit.FlatAppearance.BorderSize = 3;
+            this.BtnEdit.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnEdit.ForeColor = System.Drawing.Color.White;
             this.BtnEdit.Location = new System.Drawing.Point(169, 201);
             this.BtnEdit.Name = "BtnEdit";
             this.BtnEdit.Size = new System.Drawing.Size(110, 40);
             this.BtnEdit.TabIndex = 34;
             this.BtnEdit.Text = "Edit";
-            this.BtnEdit.UseVisualStyleBackColor = true;
+            this.BtnEdit.UseVisualStyleBackColor = false;
             this.BtnEdit.Click += new System.EventHandler(this.BtnEdit_Click);
             // 
             // BtnBack
             // 
+            this.BtnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
+            this.BtnBack.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.BtnBack.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnBack.ForeColor = System.Drawing.Color.White;
             this.BtnBack.Location = new System.Drawing.Point(49, 509);
             this.BtnBack.Name = "BtnBack";
             this.BtnBack.Size = new System.Drawing.Size(110, 30);
             this.BtnBack.TabIndex = 35;
             this.BtnBack.Text = "Back";
-            this.BtnBack.UseVisualStyleBackColor = true;
+            this.BtnBack.UseVisualStyleBackColor = false;
             this.BtnBack.Click += new System.EventHandler(this.BtnBack_Click);
             // 
             // CmbListName
@@ -205,17 +222,17 @@
             this.CmbListName.TabIndex = 37;
             this.CmbListName.Text = "Select Tag";
             this.CmbListName.SelectedIndexChanged += new System.EventHandler(this.CmbListName_SelectedIndexChanged);
-            this.CmbListName.Layout += new System.Windows.Forms.LayoutEventHandler(this.CmbListName_Layout);
             // 
             // LbListName
             // 
             this.LbListName.AutoSize = true;
-            this.LbListName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbListName.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbListName.ForeColor = System.Drawing.Color.White;
             this.LbListName.Location = new System.Drawing.Point(46, 87);
             this.LbListName.Name = "LbListName";
-            this.LbListName.Size = new System.Drawing.Size(28, 15);
+            this.LbListName.Size = new System.Drawing.Size(63, 19);
             this.LbListName.TabIndex = 36;
-            this.LbListName.Text = "Tag";
+            this.LbListName.Text = "List Name";
             // 
             // TxtNewList
             // 
@@ -227,27 +244,33 @@
             // LbNewList
             // 
             this.LbNewList.AutoSize = true;
-            this.LbNewList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.LbNewList.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LbNewList.ForeColor = System.Drawing.Color.White;
             this.LbNewList.Location = new System.Drawing.Point(238, 87);
             this.LbNewList.Name = "LbNewList";
-            this.LbNewList.Size = new System.Drawing.Size(54, 15);
+            this.LbNewList.Size = new System.Drawing.Size(54, 19);
             this.LbNewList.TabIndex = 38;
             this.LbNewList.Text = "New List";
             // 
             // BtnCreateList
             // 
-            this.BtnCreateList.Location = new System.Drawing.Point(489, 105);
+            this.BtnCreateList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(182)))), ((int)(((byte)(74)))));
+            this.BtnCreateList.FlatAppearance.BorderSize = 0;
+            this.BtnCreateList.Font = new System.Drawing.Font("Poppins", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BtnCreateList.ForeColor = System.Drawing.Color.White;
+            this.BtnCreateList.Location = new System.Drawing.Point(505, 99);
             this.BtnCreateList.Name = "BtnCreateList";
-            this.BtnCreateList.Size = new System.Drawing.Size(90, 20);
+            this.BtnCreateList.Size = new System.Drawing.Size(110, 30);
             this.BtnCreateList.TabIndex = 40;
             this.BtnCreateList.Text = "Create";
-            this.BtnCreateList.UseVisualStyleBackColor = true;
+            this.BtnCreateList.UseVisualStyleBackColor = false;
             this.BtnCreateList.Click += new System.EventHandler(this.BtnCreateList_Click);
             // 
             // FrmList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(33)))), ((int)(((byte)(66)))));
             this.ClientSize = new System.Drawing.Size(1014, 563);
             this.Controls.Add(this.BtnCreateList);
             this.Controls.Add(this.TxtNewList);
@@ -269,6 +292,7 @@
             this.Controls.Add(this.LbDeptID);
             this.Controls.Add(this.LbTitle);
             this.Controls.Add(this.DgvTable);
+            this.MaximizeBox = false;
             this.Name = "FrmList";
             this.Text = "FrmList";
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).EndInit();

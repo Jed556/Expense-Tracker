@@ -210,7 +210,6 @@
             this.CmbExpenseTag.Size = new System.Drawing.Size(162, 21);
             this.CmbExpenseTag.TabIndex = 19;
             this.CmbExpenseTag.Text = "Select Tag";
-            this.CmbExpenseTag.Layout += new System.Windows.Forms.LayoutEventHandler(this.CmbExpenseTag_Layout);
             // 
             // DgvTable
             // 
@@ -280,6 +279,7 @@
             this.Controls.Add(this.LbExpenseAmount);
             this.Controls.Add(this.LbDeptName);
             this.Controls.Add(this.LbDeptID);
+            this.MaximizeBox = false;
             this.Name = "FrmList_Edit";
             this.Text = "Expense Tracker";
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).EndInit();
