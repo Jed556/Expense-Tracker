@@ -28,10 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LbDeptID = new System.Windows.Forms.Label();
             this.LbDeptName = new System.Windows.Forms.Label();
             this.LbExpenseAmount = new System.Windows.Forms.Label();
-            this.TxtExpenseID = new System.Windows.Forms.TextBox();
             this.TxtExpenseName = new System.Windows.Forms.TextBox();
             this.TxtExpenseAmount = new System.Windows.Forms.TextBox();
             this.BtnAdd = new System.Windows.Forms.Button();
@@ -51,21 +49,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.DgvTable)).BeginInit();
             this.SuspendLayout();
             // 
-            // LbDeptID
-            // 
-            this.LbDeptID.AutoSize = true;
-            this.LbDeptID.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.LbDeptID.Location = new System.Drawing.Point(46, 98);
-            this.LbDeptID.Name = "LbDeptID";
-            this.LbDeptID.Size = new System.Drawing.Size(70, 15);
-            this.LbDeptID.TabIndex = 0;
-            this.LbDeptID.Text = "Expense ID";
-            // 
             // LbDeptName
             // 
             this.LbDeptName.AutoSize = true;
             this.LbDeptName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.LbDeptName.Location = new System.Drawing.Point(173, 98);
+            this.LbDeptName.Location = new System.Drawing.Point(47, 98);
             this.LbDeptName.Name = "LbDeptName";
             this.LbDeptName.Size = new System.Drawing.Size(41, 15);
             this.LbDeptName.TabIndex = 1;
@@ -75,23 +63,15 @@
             // 
             this.LbExpenseAmount.AutoSize = true;
             this.LbExpenseAmount.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.LbExpenseAmount.Location = new System.Drawing.Point(623, 98);
+            this.LbExpenseAmount.Location = new System.Drawing.Point(497, 98);
             this.LbExpenseAmount.Name = "LbExpenseAmount";
             this.LbExpenseAmount.Size = new System.Drawing.Size(49, 15);
             this.LbExpenseAmount.TabIndex = 3;
             this.LbExpenseAmount.Text = "Amount";
             // 
-            // TxtExpenseID
-            // 
-            this.TxtExpenseID.Location = new System.Drawing.Point(48, 116);
-            this.TxtExpenseID.Name = "TxtExpenseID";
-            this.TxtExpenseID.Size = new System.Drawing.Size(91, 20);
-            this.TxtExpenseID.TabIndex = 4;
-            this.TxtExpenseID.TextChanged += new System.EventHandler(this.TxtExpenseID_TextChanged);
-            // 
             // TxtExpenseName
             // 
-            this.TxtExpenseName.Location = new System.Drawing.Point(175, 116);
+            this.TxtExpenseName.Location = new System.Drawing.Point(49, 116);
             this.TxtExpenseName.Name = "TxtExpenseName";
             this.TxtExpenseName.Size = new System.Drawing.Size(238, 20);
             this.TxtExpenseName.TabIndex = 5;
@@ -99,7 +79,7 @@
             // 
             // TxtExpenseAmount
             // 
-            this.TxtExpenseAmount.Location = new System.Drawing.Point(624, 116);
+            this.TxtExpenseAmount.Location = new System.Drawing.Point(498, 116);
             this.TxtExpenseAmount.Name = "TxtExpenseAmount";
             this.TxtExpenseAmount.Size = new System.Drawing.Size(162, 20);
             this.TxtExpenseAmount.TabIndex = 7;
@@ -176,7 +156,7 @@
             // 
             // TxtExpenseDate
             // 
-            this.TxtExpenseDate.Location = new System.Drawing.Point(824, 116);
+            this.TxtExpenseDate.Location = new System.Drawing.Point(698, 116);
             this.TxtExpenseDate.Name = "TxtExpenseDate";
             this.TxtExpenseDate.Size = new System.Drawing.Size(137, 20);
             this.TxtExpenseDate.TabIndex = 15;
@@ -186,7 +166,7 @@
             // 
             this.lbExpenseDate.AutoSize = true;
             this.lbExpenseDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.lbExpenseDate.Location = new System.Drawing.Point(823, 98);
+            this.lbExpenseDate.Location = new System.Drawing.Point(697, 98);
             this.lbExpenseDate.Name = "lbExpenseDate";
             this.lbExpenseDate.Size = new System.Drawing.Size(33, 15);
             this.lbExpenseDate.TabIndex = 14;
@@ -196,7 +176,7 @@
             // 
             this.LbExpenseTag.AutoSize = true;
             this.LbExpenseTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.LbExpenseTag.Location = new System.Drawing.Point(436, 98);
+            this.LbExpenseTag.Location = new System.Drawing.Point(310, 98);
             this.LbExpenseTag.Name = "LbExpenseTag";
             this.LbExpenseTag.Size = new System.Drawing.Size(28, 15);
             this.LbExpenseTag.TabIndex = 17;
@@ -205,7 +185,7 @@
             // CmbExpenseTag
             // 
             this.CmbExpenseTag.FormattingEnabled = true;
-            this.CmbExpenseTag.Location = new System.Drawing.Point(437, 115);
+            this.CmbExpenseTag.Location = new System.Drawing.Point(311, 115);
             this.CmbExpenseTag.Name = "CmbExpenseTag";
             this.CmbExpenseTag.Size = new System.Drawing.Size(162, 21);
             this.CmbExpenseTag.TabIndex = 19;
@@ -224,7 +204,6 @@
             this.DgvTable.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvTable_CellValueChanged);
             this.DgvTable.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvTable_UserAddedRow);
             this.DgvTable.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.DgvTable_UserDeletedRow);
-            this.DgvTable.Layout += new System.Windows.Forms.LayoutEventHandler(this.DgvTable_Layout);
             // 
             // BtnSave
             // 
@@ -275,10 +254,8 @@
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.TxtExpenseAmount);
             this.Controls.Add(this.TxtExpenseName);
-            this.Controls.Add(this.TxtExpenseID);
             this.Controls.Add(this.LbExpenseAmount);
             this.Controls.Add(this.LbDeptName);
-            this.Controls.Add(this.LbDeptID);
             this.MaximizeBox = false;
             this.Name = "FrmList_Edit";
             this.Text = "Expense Tracker";
@@ -289,11 +266,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label LbDeptID;
         private System.Windows.Forms.Label LbDeptName;
         private System.Windows.Forms.Label LbExpenseAmount;
-        private System.Windows.Forms.TextBox TxtExpenseID;
         private System.Windows.Forms.TextBox TxtExpenseName;
         private System.Windows.Forms.TextBox TxtExpenseAmount;
         private System.Windows.Forms.Button BtnAdd;
