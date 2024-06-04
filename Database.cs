@@ -99,7 +99,8 @@ namespace ExpenseTracker
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ListID", Schema.id);
-            command.Parameters.AddWithValue("@UserID", Schema.id);
+            command.Parameters.AddWithValue("@UserID", Schema.userId);
+            command.Parameters.AddWithValue("@Name", Schema.name);
 
             mda.SelectCommand = command;
             mda.Fill(dt);
@@ -134,8 +135,8 @@ namespace ExpenseTracker
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
+            command.Parameters.AddWithValue("@ListID", Schema.id);
             command.Parameters.AddWithValue("@UserID", Schema.userId);
-            command.Parameters.AddWithValue("@ListID", Schema.name);
             command.Parameters.AddWithValue("@Name", Schema.name);
 
             int success = command.ExecuteNonQuery();
@@ -191,6 +192,20 @@ namespace ExpenseTracker
             return mdr;
         }
 
+        public MySqlDataReader SearchQuery(String Query, ExpenseList Schema)
+        {
+            if (Connect()) return null;
+
+            MySqlCommand command = new MySqlCommand(Query, this.connection);
+            command.Parameters.AddWithValue("@ListID", Schema.id);
+            command.Parameters.AddWithValue("@UserID", Schema.userId);
+            command.Parameters.AddWithValue("@Name", Schema.name);
+
+            MySqlDataReader mdr = command.ExecuteReader();
+
+            return mdr;
+        }
+
         public int GetNextIndex(string Table, string IDName)
         {
             if (Connect()) return 0;
@@ -200,7 +215,7 @@ namespace ExpenseTracker
 
             MySqlDataReader reader = command.ExecuteReader();
 
-            int expectedIndex = 0;
+            int expectedIndex = 1;
             while (reader.Read())
             {
                 int currentIndex = reader.GetInt32(0);
