@@ -142,7 +142,7 @@
             this.Controls.Add(this.LbUsername);
             this.MaximizeBox = false;
             this.Name = "FrmLogin";
-            this.Text = "Login";
+            this.Text = "Expense Tracker";
             this.Load += new System.EventHandler(this.FrmLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
