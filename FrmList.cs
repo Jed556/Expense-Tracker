@@ -15,13 +15,11 @@ namespace ExpenseTracker
     public partial class FrmList : Form
     {
         // --------------------------------- INITIALIZE --------------------------------- //
-        bool TxtExpenseID_HasVal = false;
         bool TxtExpenseName_HasVal = false;
         bool TxtExpenseAmount_HasVal = false;
         bool CmbExpenseTag_HasVal = false;
         bool TxtExpenseDate_HasVal = false;
 
-        ExpenseList NewList = new ExpenseList();
         ExpenseList ActiveList = new ExpenseList();
         Expense Expense = new Expense();
 
@@ -33,53 +31,20 @@ namespace ExpenseTracker
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-             CmbListName_Update();
+
+            ActiveList.userId = Global.User.id;
+            Expense.userId = Global.User.id;
+
+            CmbListName_Update();
         }
 
         // --------------------------------- FUNCTIONS --------------------------------- //
 
-        void Clear()
-        {
-            foreach (Control control in this.Controls)
-            {
-                if (control is TextBox)
-                {
-                    (control as TextBox).Clear();
-                }
-            }
-
-            ClearValues();
-        }
-
-        void ClearValues()
-        {
-            TxtExpenseID.Clear();
-            TxtExpenseName.Clear();
-            CmbExpenseTag.SelectedIndex = -1;
-            TxtExpenseAmount.Clear();
-            TxtExpenseDate.Clear();
-
-            Expense.id = 0;
-            Expense.name = "";
-            Expense.tag = "";
-            Expense.amount = 0;
-            Expense.date = DateTime.Now;
-        }
 
         void DisableButtons()
         {
             BtnSearch.Enabled = false;
             BtnEdit.Enabled = false;
-        }
-
-        void GetValues()
-        {
-            Expense.id = int.Parse(TxtExpenseID.Text);
-            Expense.userId = 0;
-            Expense.name = TxtExpenseName.Text;
-            Expense.tag = CmbExpenseTag.Text;
-            Expense.amount = double.Parse(TxtExpenseAmount.Text);
-            Expense.date = DateTime.Now;
         }
 
         void CheckEnable()
@@ -94,30 +59,78 @@ namespace ExpenseTracker
             }
         }
 
+        private void UpdateTotalAmount()
+        {
+            double TotalAmount = 0;
+
+            foreach (DataGridViewRow row in DgvTable.Rows)
+            {
+                if (!row.IsNewRow)
+                    TotalAmount += double.Parse(row.Cells[5].Value.ToString());
+            }
+
+            TxtTotalAmount.Text = TotalAmount.ToString();
+        }
+
         void UpdateList()
         {
             CmbExpenseTag_Update();
             DgvTable_Update();
+            UpdateTotalAmount();
             BtnEdit.Enabled = true;
+        }
+
+        private int FindListID(string ListName, int UserID)
+        {
+            ExpenseList ExpenseList = new ExpenseList();
+            ExpenseList.name = ListName;
+            ExpenseList.userId = UserID;
+
+            String FindList = "SELECT ListID FROM tbllists WHERE Name = @Name AND UserID = @UserID";
+            MySqlDataReader mdr = Global.Database.SearchQuery(FindList, ExpenseList);
+            if (mdr.Read())
+            {
+                ExpenseList.id = mdr.GetInt32(0);
+            }
+
+            Global.Database.Disconnect();
+
+            return ExpenseList.id;
+        }
+
+        private void dtExpense_Update()
+        {
+            ActiveList.id = FindListID(CmbListName.Text, Global.User.id);
+            String Data = "SELECT * FROM tblexpenses WHERE ListID = @ListID AND UserID = @UserID";
+            dtExpense = Global.Database.ExecuteAdapter(Data, ActiveList);
+            Global.Database.Disconnect();
         }
 
         void DgvTable_Update()
         {
-            ActiveList.id = CmbListName.SelectedIndex;
-            ActiveList.userId = Global.User.id;
-            String Data = "SELECT * FROM tblexpenses WHERE ListID = @ListID AND UserID = @UserID";
-            dtExpense = Global.Database.ExecuteAdapter(Data, ActiveList);
-
+            dtExpense_Update();
             DgvTable.DataSource = dtExpense;
             DgvTable.Columns["ExpenseID"].Visible = false;
             DgvTable.Columns["ListID"].Visible = false;
             DgvTable.Columns["UserID"].Visible = false;
 
-            Global.Database.Disconnect();
-
             foreach (DataGridViewColumn column in DgvTable.Columns)
             {
                 column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            }
+        }
+
+        void FilterTable()
+        {
+            if (CmbExpenseTag.Text != "")
+            {
+                DataView dv = dtExpense.DefaultView;
+                dv.RowFilter = string.Format("Tag LIKE '%{0}%'", CmbExpenseTag.Text);
+                DgvTable.DataSource = dv.ToTable();
+            }
+            else
+            {
+                DgvTable.DataSource = dtExpense;
             }
         }
 
@@ -130,8 +143,6 @@ namespace ExpenseTracker
             CmbListName.DisplayMember = "Name";
             CmbListName.ValueMember = "ListID";
 
-            //CmbListName.SelectedIndex = 0;
-
             Global.Database.Disconnect();
 
             UpdateList();
@@ -139,29 +150,45 @@ namespace ExpenseTracker
 
         private void CmbExpenseTag_Update()
         {
-            ActiveList.id = CmbListName.SelectedIndex;
-            ActiveList.userId = Global.User.id;
-            String Data = "SELECT * FROM tblexpenses WHERE ListID = @ListID AND UserID = @UserID";
-            dtExpense = Global.Database.ExecuteAdapter(Data, ActiveList);
+            dtExpense_Update();
 
+            /*
+            DataTable dt = dtExpense.Clone();
+            DataRow newRow = dt.NewRow();
+            newRow["Tag"] = "All";
+            dt.Rows.Add(newRow);
+            */
             CmbExpenseTag.DataSource = dtExpense;
             CmbExpenseTag.DisplayMember = "Tag";
             CmbExpenseTag.ValueMember = "Tag";
-
-            Global.Database.Disconnect();
         }
 
         // --------------------------------- EVENTS --------------------------------- //
 
-        private void TxtExpenseID_TextChanged(object sender, EventArgs e)
+
+        private void TxtExpenseName_TextChanged(object sender, EventArgs e)
         {
-            if (TxtExpenseID.Text != "")
+            if (TxtExpenseName.Text != "")
             {
-                TxtExpenseID_HasVal = true;
+                TxtExpenseName_HasVal = true;
             }
             else
             {
-                TxtExpenseID_HasVal = false;
+                TxtExpenseName_HasVal = false;
+            }
+
+            CheckEnable();
+        }
+
+        private void TxtExpenseAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (TxtExpenseAmount.Text != "")
+            {
+                TxtExpenseAmount_HasVal = true;
+            }
+            else
+            {
+                TxtExpenseAmount_HasVal = false;
             }
 
             CheckEnable();
@@ -180,20 +207,32 @@ namespace ExpenseTracker
             }
         }
 
+        private void CmbExpenseTag_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CmbExpenseTag.Text != "" && CmbExpenseTag.Text != "All")
+            {
+                DataView dv = dtExpense.DefaultView;
+                dv.RowFilter = string.Format("Tag LIKE '%{0}%'", CmbExpenseTag.Text);
+                DgvTable.DataSource = dv.ToTable();
+            }
+            else
+            {
+                DgvTable.DataSource = dtExpense;
+            }
+        }
+
         // --------------------------------- FORM --------------------------------- //
 
         private void BtnSearch_Click(object sender, EventArgs e)
         {
             try
             {
-                Expense.id = int.Parse(TxtExpenseID.Text);
-                Expense.userId = Global.User.id;
                 Expense.name = TxtExpenseName.Text;
                 Expense.tag = CmbExpenseTag.Text;
                 Expense.amount = double.Parse(TxtExpenseAmount.Text);
                 Expense.date = DateTime.Parse(TxtExpenseDate.Text);
 
-                String Query = "SELECT * FROM tblexpenses WHERE UserID=@UserID AND (ExpenseID=@ExpenseID OR ExpenseName=@ExpenseName OR ExpenseTag=@ExpenseTag OR ExpenseAmount=@ExpenseAmount OR ExpenseDate=@ExpenseDate)";
+                String Query = "SELECT * FROM tblexpenses WHERE UserID=@UserID AND (ExpenseName=@ExpenseName OR ExpenseTag=@ExpenseTag OR ExpenseAmount=@ExpenseAmount OR ExpenseDate=@ExpenseDate)";
                 dtExpense = Global.Database.ExecuteAdapter(Query, Expense);
                 DgvTable.DataSource = dtExpense;
             }
@@ -211,24 +250,61 @@ namespace ExpenseTracker
             }
             else
             {
+                String checkQuery = "SELECT * FROM tbllists WHERE Name=@Name AND UserID=@UserID";
+                ExpenseList ExpenseList = new ExpenseList();
+                ExpenseList.name = TxtNewList.Text;
+                ExpenseList.userId = Global.User.id;
+
+                MySqlDataReader mdr = Global.Database.SearchQuery(checkQuery, ExpenseList);
+
+                if (mdr.Read())
+                {
+                    MessageBox.Show("List name already exists.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Global.Database.Disconnect();
+                    return;
+                }
+                Global.Database.Disconnect();
+
+                ExpenseList NewList = new ExpenseList();
                 NewList.id = Global.Database.GetNextIndex("tbllists", "ListID");
                 NewList.userId = Global.User.id;
                 NewList.name = TxtNewList.Text;
 
-                String Query = "INSERT INTO tbllists (ListID, Name, UserID) VALUES (@ListID, @Name, @UserID)";
+                String insertQuery = "INSERT INTO tbllists (ListID, Name, UserID) VALUES (@ListID, @Name, @UserID)";
+                Global.Database.ExecuteQuery(insertQuery, NewList);
 
-                Global.Database.ExecuteQuery(Query, NewList);
+                CmbListName_Update();
                 UpdateList();
+                TxtNewList.Text = "";
             }
-            TxtNewList.Text = "";
+        }
 
-            CmbListName_Update();
-            UpdateList();
+        private void BtnDeleteList_Click(object sender, EventArgs e)
+        {
+            if (CmbListName.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a list to delete.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                DialogResult Confirm = MessageBox.Show("Are you sure you want to delete this list?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (Confirm == DialogResult.Yes)
+                {
+                    ActiveList.id = FindListID(CmbListName.Text, ActiveList.userId);
+
+                    String Query = "DELETE FROM tbllists WHERE ListID=@ListID AND UserID=@UserID";
+                    Global.Database.ExecuteQuery(Query, ActiveList);
+
+                    CmbListName_Update();
+                    UpdateList();
+                }
+            }
         }
 
         private void BtnEdit_Click(object sender, EventArgs e)
         {
-            Global.ExpenseList.UpdateExpenselist(ActiveList.id, ActiveList.userId, ActiveList.name);
+            Global.ExpenseList.UpdateExpenselist(FindListID(CmbListName.Text, Global.User.id), Global.User.id, CmbListName.Text);
             Functions.SwitchWindow(new FrmList_Edit());
         }
 
