@@ -23,7 +23,7 @@ namespace ExpenseTracker
             connection = new MySqlConnection(connectionString);
         }
 
-        public void Connect()
+        public bool Connect()
         {
             try
             {
@@ -35,7 +35,10 @@ namespace ExpenseTracker
             catch (Exception ex)
             {
                 MessageBox.Show("Error Connnecting to Database: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
             }
+
+            return false;
         }
 
         public void Disconnect()
@@ -48,7 +51,7 @@ namespace ExpenseTracker
 
         public DataTable ExecuteAdapter(String Query)
         {
-            Connect();
+            if (Connect()) return null;
             MySqlDataAdapter mda = new MySqlDataAdapter();
             DataTable dt = new DataTable();
             BindingSource bs = new BindingSource();
@@ -66,7 +69,7 @@ namespace ExpenseTracker
 
         public DataTable ExecuteAdapter(String Query, Expense Schema)
         {
-            Connect();
+            if (Connect()) return null;
             MySqlDataAdapter mda = new MySqlDataAdapter();
             DataTable dt = new DataTable();
             BindingSource bs = new BindingSource();
@@ -74,7 +77,7 @@ namespace ExpenseTracker
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
             command.Parameters.AddWithValue("@UserID", Schema.userId);
-            command.Parameters.AddWithValue("@ListID", Schema.userId);
+            command.Parameters.AddWithValue("@ListID", Schema.listId);
             command.Parameters.AddWithValue("@Name", Schema.name);
             command.Parameters.AddWithValue("@Tag", Schema.tag);
             command.Parameters.AddWithValue("@Amount", Schema.amount);
@@ -89,7 +92,7 @@ namespace ExpenseTracker
 
         public DataTable ExecuteAdapter(String Query, ExpenseList Schema)
         {
-            Connect();
+            if (Connect()) return null;
             MySqlDataAdapter mda = new MySqlDataAdapter();
             DataTable dt = new DataTable();
             BindingSource bs = new BindingSource();
@@ -107,7 +110,7 @@ namespace ExpenseTracker
 
         public int ExecuteQuery(String Query, Expense Schema)
         {
-            Connect();
+            if (Connect()) return 0;
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
@@ -127,11 +130,12 @@ namespace ExpenseTracker
 
         public int ExecuteQuery(String Query, ExpenseList Schema)
         {
-            Connect();
+            if (Connect()) return 0;
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
             command.Parameters.AddWithValue("@UserID", Schema.userId);
+            command.Parameters.AddWithValue("@ListID", Schema.name);
             command.Parameters.AddWithValue("@Name", Schema.name);
 
             int success = command.ExecuteNonQuery();
@@ -143,7 +147,7 @@ namespace ExpenseTracker
 
         public int ExecuteQuery(String Query, User Schema)
         {
-            Connect();
+            if (Connect()) return 0;
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
@@ -159,7 +163,7 @@ namespace ExpenseTracker
 
         public MySqlDataReader SearchQuery(String Query, Expense Schema)
         {
-            Connect();
+            if (Connect()) return null;
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
@@ -175,7 +179,7 @@ namespace ExpenseTracker
 
         public MySqlDataReader SearchQuery(String Query, User Schema)
         {
-            Connect();
+            if (Connect()) return null;
 
             MySqlCommand command = new MySqlCommand(Query, this.connection);
             command.Parameters.AddWithValue("@ID", Schema.id);
@@ -189,23 +193,19 @@ namespace ExpenseTracker
 
         public int GetNextIndex(string Table, string IDName)
         {
-            Connect();
+            if (Connect()) return 0;
 
-            string query = "SELECT @IDName FROM @Table ORDER BY @IDName";
+            string query = $"SELECT {IDName} FROM {Table} ORDER BY {IDName}";
             MySqlCommand command = new MySqlCommand(query, connection);
-            command.Parameters.AddWithValue("@IDName", IDName);
-            command.Parameters.AddWithValue("@Table", Table);
 
             MySqlDataReader reader = command.ExecuteReader();
 
-            int expectedIndex = 1;
+            int expectedIndex = 0;
             while (reader.Read())
             {
                 int currentIndex = reader.GetInt32(0);
-                if (currentIndex != expectedIndex)
-                {
-                    break;
-                }
+                if (currentIndex != expectedIndex) break;
+
                 expectedIndex++;
             }
 
